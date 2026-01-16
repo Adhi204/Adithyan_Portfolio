@@ -31,10 +31,13 @@
                         $inactive = 'text-slate-600 hover:text-slate-900';
                     @endphp
 
-                    <a href="/" class="{{ request()->is('/') ? $active : $inactive }} {{ $link }}">Home</a>
+                    @if (!request()->routeIs('login'))
+
+                     <a href="/" class="{{ request()->is('/') ? $active : $inactive }} {{ $link }}">Home</a>
                     <a href="/portfolio" class="{{ request()->is('portfolio') ? $active : $inactive }} {{ $link }}">Portfolio</a>
                     <a href="/skills" class="{{ request()->is('skills') ? $active : $inactive }} {{ $link }}">Skills</a>
                     <a href="/resume" class="{{ request()->is('resume') ? $active : $inactive }} {{ $link }}">Resume</a>
+                        @endif
                 </div>
 
                 <!-- CTA -->
