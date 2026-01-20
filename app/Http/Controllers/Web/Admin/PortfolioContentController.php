@@ -17,9 +17,7 @@ class PortfolioContentController extends Controller
      */
     public static function middleware(): array
     {
-        return [
-            'auth:sanctum'
-        ];
+        return [];
     }
 
     /**
@@ -39,7 +37,8 @@ class PortfolioContentController extends Controller
                 Route::get('resume', 'resume')->name('admin.resume');
                 Route::get('projects', 'projects')->name('admin.projects');
 
-                Route::post('update', 'update')->name('admin.update');
+                Route::post('{portfolio}/update', 'update')->name('admin.update');
+                Route::get('profile', 'profile')->name('portfolio.profile');
             });
     }
 
@@ -78,10 +77,8 @@ class PortfolioContentController extends Controller
     /**
      * Update portfolio content.
      */
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request, PortfolioContent $portfolio)
     {
-        $portfolio = PortfolioContent::firstOrCreate([]);
-
         // TITLE
         if ($request->has('title')) {
             $portfolio->title = $request->title;
@@ -106,5 +103,15 @@ class PortfolioContentController extends Controller
         $portfolio->save();
 
         return redirect()->route('admin.dashboard')->with('success', 'Updated successfully');
+    }
+
+    /**
+     * Show the portfolio profile page.
+     */
+    public function profile()
+    {
+        $content = PortfolioContent::latest()->first();
+
+        return view('profile')->with('content', $content);
     }
 }

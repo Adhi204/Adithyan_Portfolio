@@ -45,6 +45,9 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    /**
+     * Handle a login request to the application.
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');

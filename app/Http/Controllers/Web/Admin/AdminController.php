@@ -16,7 +16,7 @@ class AdminController extends Controller
     public static function middleware(): array
     {
         return [
-            'auth:sanctum'
+            'auth',
         ];
     }
 
@@ -41,7 +41,8 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
+        abort_unless(auth()->user(), 403);
+
         return view('admin.dashboard');
     }
- 
 }

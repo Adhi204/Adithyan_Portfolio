@@ -13,7 +13,7 @@ HomeController::routes();
 
 // public routes
 Route::get('/', function () {
-    return view('home');
+    return view('profile');
 });
 Route::get('/portfolio', function () {
     return view('portfolio');
