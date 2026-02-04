@@ -19,7 +19,7 @@ class LoginController extends Controller
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum', except: ['loginForm', 'login'])
+            new Middleware('auth', except: ['loginForm', 'login'])
         ];
     }
 
