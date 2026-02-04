@@ -15,6 +15,7 @@ class PortfolioController extends Controller
             'skills',
             'projects',
             'resumes',
+            'services',
         ])->first();
 
         if (!$user) {
@@ -28,6 +29,7 @@ class PortfolioController extends Controller
             'skills' => $user->skills,
             'projects' => $user->projects,
             'resume' => $user->resumes->first(),
+            'services' => $user->services,
         ]);
     }
 }

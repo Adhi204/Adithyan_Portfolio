@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Project;
 use App\Models\Resume;
+use App\Models\Service;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\UserSkill;
@@ -50,5 +51,12 @@ class DatabaseSeeder extends Seeder
             'user_id' => $user->id,
             ...$data['resume'],
         ]);
+
+        foreach ($data['services'] as $service) {
+            Service::create([
+                'user_id' => $user->id,
+                ...$service,
+            ]);
+        }
     }
 }

@@ -21,22 +21,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        //PROJECTS
+        // PROJECTS
         const projectsEl = document.getElementById("projects-list");
 
         if (projectsEl && Array.isArray(data.projects)) {
             projectsEl.innerHTML = "";
 
-            data.projects.forEach((project) => {
+            data.projects.forEach((project, index) => {
                 const card = document.createElement("div");
                 card.className =
                     "rounded-xl border bg-white p-6 shadow-sm hover:shadow transition";
 
                 card.innerHTML = `
             <h3
-                class="cursor-pointer text-xl font-semibold text-indigo-600 hover:underline"
-                data-title="${project.title}"
-                data-description="${project.description.replace(/"/g, "&quot;")}"
+                class="cursor-pointer text-xl font-semibold text-slate-900 hover:text-indigo-600 transition"
+                data-project-index="${index}"
             >
                 ${project.title}
             </h3>
@@ -44,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ${
                 project.github_url
                     ? `<a href="${project.github_url}" target="_blank"
-                          class="mt-3 inline-block text-sm font-medium text-slate-700 hover:text-indigo-600">
+                          class="mt-3 inline-block text-sm font-medium text-slate-600 hover:text-indigo-600">
                           View on GitHub →
                        </a>`
                     : ""
@@ -61,13 +60,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         const modalDescription = document.getElementById("modal-description");
         const modalClose = document.getElementById("modal-close");
 
-        // Open modal
         document.addEventListener("click", (e) => {
             const target = e.target;
 
-            if (target.matches("[data-title]")) {
-                modalTitle.textContent = target.dataset.title;
-                modalDescription.textContent = target.dataset.description;
+            if (target.matches("[data-project-index]")) {
+                const project = data.projects[target.dataset.projectIndex];
+
+                modalTitle.textContent = project.title;
+
+                if (Array.isArray(project.description)) {
+                    modalDescription.innerHTML = `
+                <ul class="list-disc list-inside space-y-2">
+                    ${project.description
+                        .map((point) => `<li>${point}</li>`)
+                        .join("")}
+                </ul>
+            `;
+                } else {
+                    modalDescription.textContent = project.description ?? "";
+                }
 
                 modal.classList.remove("hidden");
                 modal.classList.add("flex");
@@ -102,13 +113,60 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         //RESUME
-        const resumeEl = document.getElementById("resume-box");
-        if (resumeEl && data.resume) {
-            resumeEl.innerHTML = `
-                <div class="rounded-xl border p-6 flex justify-between items-center">
-                    <p class="font-semibold">${data.resume.title ?? "My Resume"}</p>
-                </div>
-            `;
+        const resumeBox = document.getElementById("resume-box");
+
+        if (resumeBox && data.resume) {
+            const updatedDate = new Date(
+                data.resume.updated_at,
+            ).toLocaleDateString();
+
+            resumeBox.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+            <div>
+                <button
+                    id="resume-open"
+                    class="text-lg font-semibold text-slate-900 hover:text-indigo-600 transition"
+                >
+                    ${data.resume.title ?? "View Resume"}
+                </button>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Last updated: ${updatedDate}
+                </p>
+            </div>
+
+            <a
+                href="/storage/resumes/${data.resume.file_name}"
+                target="_blank"
+                class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition"
+            >
+                Open PDF
+            </a>
+        </div>
+    `;
+        }
+
+        // WHAT I DO / SERVICES
+        const servicesEl = document.getElementById("services-list");
+
+        if (servicesEl && Array.isArray(data.services)) {
+            servicesEl.innerHTML = "";
+
+            data.services.forEach((service) => {
+                servicesEl.innerHTML += `
+            <div class="rounded-2xl border border-slate-200 p-6
+                        transition hover:shadow-md hover:-translate-y-1">
+                <h3 class="text-lg font-semibold mb-2">
+                    ${service.title}
+                </h3>
+
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    ${service.description}
+                </p>
+            </div>
+        `;
+            });
         }
 
         //SCROLL ANIMATION

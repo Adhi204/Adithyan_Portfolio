@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->hasMany(Resume::class);
     }
 
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class)->orderBy('order');
+    }
+
     /**
      * Log an activity for this user.
      *

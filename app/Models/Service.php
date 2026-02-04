@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 
-class UserProfile extends Model
+class Service extends Model
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -19,11 +19,9 @@ class UserProfile extends Model
      */
     protected $fillable = [
         'user_id',
-        'name',
-        'designation',
-        'about',
-        'avatar',
-        'location',
+        'title',
+        'description',
+        'order',
     ];
 
     /**

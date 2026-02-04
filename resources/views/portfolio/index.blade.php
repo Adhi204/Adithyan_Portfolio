@@ -5,29 +5,40 @@
     <section
         class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-10 shadow-lg">
 
-        <div class="flex flex-col md:flex-row items-center gap-10 text-slate-100">
+        <div class="grid gap-10 md:grid-cols-[220px_1fr] items-center text-slate-100">
 
-            <!-- Avatar -->
-            <div class="relative">
-                <div class="h-36 w-36 rounded-full overflow-hidden ring-4 ring-slate-400/40 shadow-xl">
-                    <img id="avatar" src="https://via.placeholder.com/150" alt="Profile Avatar"
-                        class="h-full w-full object-cover">
-                </div>
+            <!-- Avatar Card -->
+            <div
+                class="relative h-80 w-full overflow-hidden rounded-2xl bg-slate-800 shadow-xl
+           ring-1 ring-white/10
+           transition hover:scale-[1.02]">
+                <img id="avatar" src="https://via.placeholder.com/300x400" alt="Profile Avatar"
+                    class="h-full w-full object-cover filter grayscale-[10%]">
             </div>
 
             <!-- Info -->
-            <div class="text-center md:text-left">
+            <div>
                 <h1 id="name" class="text-2xl md:text-3xl font-extrabold tracking-tight">
                     Loading...
                 </h1>
 
                 <p id="designation" class="mt-2 text-base font-medium text-slate-300"></p>
 
-                <p id="about" class="mt-6 max-w-2xl text-slate-200 leading-relaxed"></p>
+                <p id="about" class="mt-6 max-w-3xl text-slate-200 leading-relaxed"></p>
             </div>
         </div>
     </section>
 
+    <!-- WHAT I DO -->
+    <section class="mt-24">
+        <h2 class="text-3xl font-bold text-slate-900 mb-10">
+            What I Do
+        </h2>
+
+        <div id="services-list" class="grid gap-6 md:grid-cols-3">
+            <!-- Injected by JS -->
+        </div>
+    </section>
 
     <!-- PROJECTS -->
     <section id="projects" class="mt-20 scroll-mt-24">
@@ -58,9 +69,11 @@
         </h2>
 
         <div id="resume-box" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <!-- Resume injected -->
+
+            <p class="text-slate-500">Loading resume...</p>
         </div>
     </section>
+
 
     <!-- CONTACT -->
     <section id="contact" class="mt-24 scroll-mt-24">

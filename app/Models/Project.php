@@ -42,12 +42,14 @@ class Project extends Model
     protected function casts(): array
     {
         return [
+            'description' => 'array',
             'created_at' => 'immutable_datetime',
             'updated_at' => 'immutable_datetime',
         ];
     }
 
     /** Relationships */
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
