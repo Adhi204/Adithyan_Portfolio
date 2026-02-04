@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $user = User::create([
             'email' => $data['user']['email'],
             'password' => Hash::make($data['user']['password']),
+            'is_admin' => $data['user']['is_admin'] ?? false,
         ]);
 
         UserProfile::create([

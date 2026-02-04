@@ -34,21 +34,25 @@
                         $inactive = 'text-slate-600 hover:text-slate-900';
                     @endphp
 
-                    <a href="/"
-                        class="{{ request()->is('/') ? $active : $inactive }} {{ $link }}">Home</a>
-                    <a href="#projects"
-                        class="{{ request()->is('projects') ? $active : $inactive }} {{ $link }}">Projects</a>
-                    <a href="#skills"
-                        class="{{ request()->is('skills') ? $active : $inactive }} {{ $link }}">Skills</a>
-                    <a href="#resume"
-                        class="{{ request()->is('resume') ? $active : $inactive }} {{ $link }}">Resume</a>
-                </div>
+                    @auth
+                        @if (!auth()->user()->isAdmin())
+                            <a href="/"
+                                class="{{ request()->is('/') ? $active : $inactive }} {{ $link }}">Home</a>
+                            <a href="#projects"
+                                class="{{ request()->is('projects') ? $active : $inactive }} {{ $link }}">Projects</a>
+                            <a href="#skills"
+                                class="{{ request()->is('skills') ? $active : $inactive }} {{ $link }}">Skills</a>
+                            <a href="#resume"
+                                class="{{ request()->is('resume') ? $active : $inactive }} {{ $link }}">Resume</a>
+                    </div>
 
-                <!-- CTA -->
-                <a href="#contact"
-                    class="hidden md:inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700 transition">
-                    Contact Me
-                </a>
+                    <!-- CTA -->
+                    <a href="#contact"
+                        class="hidden md:inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700 transition">
+                        Contact Me
+                    </a>
+                    @endif
+                @endauth
             </div>
         </div>
     </nav>

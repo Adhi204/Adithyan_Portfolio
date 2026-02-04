@@ -9,6 +9,7 @@ return [
     'user' => [
         'email' => 'admin@portfolio.test',
         'password' => env('PORTFOLIO_ADMIN_PASSWORD', 'password'),
+        'is_admin' => true,
     ],
 
     'profile' => [

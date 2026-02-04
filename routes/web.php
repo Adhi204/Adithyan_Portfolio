@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Web\Admin\AdminController;
 use App\Http\Controllers\Web\Admin\PortfolioContentController;
 use App\Http\Controllers\Web\Auth\LoginController;
@@ -23,5 +25,12 @@ Route::get('/', function () {
 */
 Route::prefix('admin')->group(function () {
 
-    //
+    // Admin login
+    Route::get('/login', [AuthController::class, 'show'])->name('admin.show');
+    Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    });
 });

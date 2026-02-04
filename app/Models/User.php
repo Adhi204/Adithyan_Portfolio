@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -96,5 +97,15 @@ class User extends Authenticatable
             'data' => $jsonData,
             'ip_address' => $ipAddress,
         ]);
+    }
+
+    /**
+     * Check if the user is an administrator.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 }
