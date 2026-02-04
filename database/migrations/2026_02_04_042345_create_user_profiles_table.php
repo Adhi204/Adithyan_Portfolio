@@ -18,12 +18,18 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->string('name');
-            $table->string('avatar')->nullable();
+            $table->string('avatar', 1024)->nullable();
 
             $table->string('designation');
             $table->text('about');
 
             $table->string('location')->nullable();
+
+            $table->string('phone', 20)->unique();
+            $table->string('email', 320)->unique();
+
+            $table->string('linkedin_link')->nullable();
+            $table->string('github_link')->nullable();
 
             $table->timestamps();
         });

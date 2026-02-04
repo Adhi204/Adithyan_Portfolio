@@ -24,6 +24,10 @@ class UserProfile extends Model
         'about',
         'avatar',
         'location',
+        'phone',
+        'email',
+        'linkedin_link',
+        'github_link',
     ];
 
     /**
@@ -49,7 +53,7 @@ class UserProfile extends Model
     }
 
     /** Relationships */
-    
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

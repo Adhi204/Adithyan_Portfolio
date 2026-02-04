@@ -18,6 +18,8 @@ return [
         'about' => 'I build scalable backend systems using Laravel.',
         'location' => 'India',
         'avatar' => null,
+        'phone' => 1234567895,
+        'email' => 'test@gmail.com',
     ],
 
     'skills' => [
