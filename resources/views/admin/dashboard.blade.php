@@ -13,6 +13,13 @@
             </div>
         @endif
 
+        @if (session('message'))
+            <div
+                class="mb-4 rounded p-3 text-sm
+               {{ session('message_type') === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
+                {{ session('message') }}
+            </div>
+        @endif
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
@@ -137,7 +144,6 @@
                                     onclick="return confirm('Are you sure you want to delete this project?');">
                                     &times;
                                 </button>
-
                             </form>
                         </div>
                     @endforeach
@@ -464,7 +470,8 @@
 
             <div>
                 <label class="block text-sm font-medium">Description (one point per line)</label>
-                <textarea id="update-description" name="description" rows="5" required></textarea>
+                <textarea id="update-description" name="description" rows="5" required
+                    class="mt-1 w-full rounded-md border-gray-300"></textarea>
                 <p class="text-xs text-slate-400">Enter each point on a new line.
                 </p>
             </div>
