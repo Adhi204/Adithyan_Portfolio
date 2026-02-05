@@ -58,7 +58,7 @@ class DashboardController extends Controller
 
                 Route::post('updateResume', 'updateResume')->name('admin.updateResume');
 
-                Route::post('updateService', 'updateService')->name('admin.updateService');
+                Route::post('{service}/updateService', 'updateService')->name('admin.updateService');
             });
     }
 
@@ -219,6 +219,9 @@ class DashboardController extends Controller
             'description' => $request->safe()->description,
         ]);
 
-        return redirect()->back()->with('success', 'Service updated successfully.');
+        return redirect()->back()->with([
+            'message' => 'Service updated successfully',
+            'message_type' => 'success',
+        ]);
     }
 }

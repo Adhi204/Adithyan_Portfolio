@@ -244,7 +244,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
-//dashboard
+//admin dashboard 
+
+//project
 document.querySelectorAll('.project-title').forEach(el => {
     el.addEventListener('click', () => {
         const form = document.getElementById('update-project-form');
@@ -259,4 +261,24 @@ document.querySelectorAll('.project-title').forEach(el => {
         document.getElementById('update-project-modal').classList.remove('hidden');
     });
 });
+
+// service
+document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const form = document.getElementById('update-service-form');
+        const id = card.dataset.id;
+
+        // Set form action to your route
+        form.action = `/admin/${id}/updateService`;
+
+        // Populate modal inputs
+        document.getElementById('update-service-id').value = id;
+        document.getElementById('update-service-title').value = card.dataset.title;
+        document.getElementById('update-service-description').value = card.dataset.description;
+
+        // Show modal
+        document.getElementById('update-service-modal').classList.remove('hidden');
+    });
+});
+
 
