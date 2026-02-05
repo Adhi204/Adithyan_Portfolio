@@ -27,8 +27,8 @@ class UpdateProfileRequest extends FormRequest
             'designation' => ['nullable', 'string'],
             'about' => ['nullable', 'string'],
             'location' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string', 'max:13', 'unique:user_profiles,phone'],
-            'email' => ['nullable', 'email', 'unique:user_profiles,email'],
+            'phone' => ['nullable', 'string', 'max:13'],
+            'email' => ['nullable', 'email'],
             'linkedin_link' => ['nullable', 'string'],
             'github_link' => ['nullable', 'string'],
         ];

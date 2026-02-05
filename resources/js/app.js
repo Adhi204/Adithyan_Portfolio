@@ -169,6 +169,45 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
+        // CONTACT
+        if (data.profile) {
+            const { email, phone, github_link, linkedin_link } = data.profile;
+
+            // Email
+            if (email) {
+                const el = document.getElementById("contact-email");
+                el.href = `mailto:${email}`;
+                document.getElementById("email-text").textContent = email;
+                el.classList.remove("hidden");
+            }
+
+            // Phone
+            if (phone) {
+                const el = document.getElementById("contact-phone");
+                el.href = `tel:${phone}`;
+                document.getElementById("phone-text").textContent = phone;
+                el.classList.remove("hidden");
+            }
+
+            // GitHub
+            if (github_link) {
+                const el = document.getElementById("contact-github");
+                el.href = github_link;
+                document.getElementById("github-text").textContent =
+                    github_link.replace(/^https?:\/\//, "");
+                el.classList.remove("hidden");
+            }
+
+            // LinkedIn
+            if (linkedin_link) {
+                const el = document.getElementById("contact-linkedin");
+                el.href = linkedin_link;
+                document.getElementById("linkedin-text").textContent =
+                    linkedin_link.replace(/^https?:\/\//, "");
+                el.classList.remove("hidden");
+            }
+        }
+
         //SCROLL ANIMATION
         document.querySelectorAll("section").forEach((section) => {
             section.classList.add("opacity-0", "translate-y-6");

@@ -92,10 +92,7 @@ class DashboardController extends Controller
 
 
         if ($request->hasFile('avatar')) {
-            if ($profile->avatar) {
-                Storage::delete($profile->avatar);
-            }
-            $profile->avatar = $request->file('avatar')->store('avatars');
+            $profile->saveAvatar($request->file('avatar'));
         }
 
         $profile->save();

@@ -34,27 +34,31 @@
                         $inactive = 'text-slate-600 hover:text-slate-900';
                     @endphp
 
-                    @auth
-                        @if (!auth()->user()->isAdmin())
-                            <a href="/"
-                                class="{{ request()->is('/') ? $active : $inactive }} {{ $link }}">Home</a>
-                            <a href="#projects"
-                                class="{{ request()->is('projects') ? $active : $inactive }} {{ $link }}">Projects</a>
-                            <a href="#skills"
-                                class="{{ request()->is('skills') ? $active : $inactive }} {{ $link }}">Skills</a>
-                            <a href="#resume"
-                                class="{{ request()->is('resume') ? $active : $inactive }} {{ $link }}">Resume</a>
-                    </div>
+                    @if (request()->is('/') && (!auth()->check() || !auth()->user()->isAdmin()))
+                        <div class="hidden md:flex items-center space-x-6">
+                            @php
+                                $link = 'relative text-sm font-medium transition';
+                                $active =
+                                    'text-indigo-600 after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-indigo-600';
+                                $inactive = 'text-slate-600 hover:text-slate-900';
+                            @endphp
 
-                    <!-- CTA -->
-                    <a href="#contact"
-                        class="hidden md:inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700 transition">
-                        Contact Me
-                    </a>
+                            <a href="/" class="{{ $active }} {{ $link }}">Home</a>
+                            <a href="#projects" class="{{ $inactive }} {{ $link }}">Projects</a>
+                            <a href="#skills" class="{{ $inactive }} {{ $link }}">Skills</a>
+                            <a href="#resume" class="{{ $inactive }} {{ $link }}">Resume</a>
+                        </div>
+
+                        <!-- CTA -->
+                        <a href="#contact"
+                            class="hidden md:inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700 transition">
+                            Contact Me
+                        </a>
                     @endif
-                @endauth
+
+
+                </div>
             </div>
-        </div>
     </nav>
 
     <!-- Main Content -->
@@ -67,7 +71,7 @@
     <!-- Footer -->
     <footer class="border-t border-slate-200 bg-white">
         <div class="max-w-7xl mx-auto px-6 py-8 text-center text-sm text-slate-500">
-            © {{ date('Y') }} My Portfolio. Built with Laravel & Tailwind.
+            © {{ date('Y') }} Adithyan Portfolio. Built with Laravel & Tailwind.
         </div>
     </footer>
 
