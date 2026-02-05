@@ -95,8 +95,7 @@
                             <form method="POST" action="{{ route('admin.deleteSkill', $skill) }}">
                                 @csrf
 
-                                <button onclick="return confirm('Remove this skill?')"
-                                    class="text-red-600 hover:text-red-800 text-sm">
+                                <button class="text-red-600 hover:text-red-800 text-sm">
                                     ✕
                                 </button>
                             </form>
@@ -109,23 +108,40 @@
 
             <!-- Projects -->
             <div class="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
-                <h2 class="font-semibold text-xl mb-4">Projects</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-semibold text-xl">Projects</h2>
 
-                <ul class="list-disc list-inside space-y-1 text-sm">
+                    <!-- Add Project Button -->
+                    <button onclick="document.getElementById('add-project-modal').classList.remove('hidden')"
+                        class="px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs hover:bg-indigo-700 transition">
+                        + Add Project
+                    </button>
+                </div>
+
+                <div class="grid gap-4">
                     @foreach ($user->projects as $project)
-                        <li>
-                            {{ $project->title }}
+                        <div class="flex justify-between items-center rounded-lg border p-4 hover:shadow-md transition">
 
-                            @if ($project->github_url)
-                                —
-                                <a href="{{ $project->github_url }}" target="_blank"
-                                    class="text-indigo-600 hover:underline">
-                                    GitHub
-                                </a>
-                            @endif
-                        </li>
+                            <!-- Project Title -->
+                            <span class="project-title" data-id="{{ $project->id }}" data-title="{{ $project->title }}"
+                                data-description="{{ implode("\n", $project->description ?? []) }}"
+                                data-github="{{ $project->github_url }}" data-live="{{ $project->live_url }}">
+                                {{ $project->title }}
+                            </span>
+
+                            <!-- Remove Project -->
+                            <form action="{{ route('admin.deleteProject', $project->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="text-red-500 hover:text-red-700 text-lg"
+                                    title="Remove Project"
+                                    onclick="return confirm('Are you sure you want to delete this project?');">
+                                    &times;
+                                </button>
+
+                            </form>
+                        </div>
                     @endforeach
-                </ul>
+                </div>
             </div>
 
             <!-- Services -->
@@ -192,6 +208,8 @@
         </div>
     </div>
 @endsection
+
+<!-- Model -->
 
 <!-- Profile Update Modal -->
 <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 px-4">
@@ -374,6 +392,100 @@
                 <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
                     Save
                 </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Project Modal -->
+<div id="add-project-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">
+    <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Add Project</h3>
+            <button onclick="document.getElementById('add-project-modal').classList.add('hidden')"
+                class="text-slate-500 hover:text-slate-700 text-xl">&times;</button>
+        </div>
+
+        <form method="POST" action="{{ route('admin.addProject') }}" class="space-y-4">
+            @csrf
+
+            <div>
+                <label class="block text-sm font-medium">Title</label>
+                <input type="text" name="title" required
+                    class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Description (one point per line)</label>
+                <textarea name="description" rows="5" required class="mt-1 w-full rounded-md border-gray-300"></textarea>
+                <p class="text-xs text-slate-400">Each line will be saved as a point.</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">GitHub URL</label>
+                <input type="url" name="github_url" class="mt-1 w-full rounded-md border-gray-300">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Live URL</label>
+                <input type="url" name="live_url" class="mt-1 w-full rounded-md border-gray-300">
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="document.getElementById('add-project-modal').classList.add('hidden')"
+                    class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">Cancel</button>
+                <button type="submit"
+                    class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Project Modal -->
+<div id="update-project-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">
+    <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Update Project</h3>
+            <button onclick="document.getElementById('update-project-modal').classList.add('hidden')"
+                class="text-slate-500 hover:text-slate-700 text-xl">&times;</button>
+        </div>
+
+        <form id="update-project-form" method="POST" action="" class="space-y-4">
+            @csrf
+
+            <input type="hidden" name="project_id" id="update-project-id">
+
+            <div>
+                <label class="block text-sm font-medium">Title</label>
+                <input type="text" id="update-title" name="title" required
+                    class="mt-1 w-full rounded-md border-gray-300">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Description (one point per line)</label>
+                <textarea id="update-description" name="description" rows="5" required></textarea>
+                <p class="text-xs text-slate-400">Enter each point on a new line.
+                </p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">GitHub URL</label>
+                <input type="url" id="update-github" name="github_url"
+                    class="mt-1 w-full rounded-md border-gray-300">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Live URL</label>
+                <input type="url" id="update-live" name="live_url"
+                    class="mt-1 w-full rounded-md border-gray-300">
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button"
+                    onclick="document.getElementById('update-project-modal').classList.add('hidden')"
+                    class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">Cancel</button>
+                <button type="submit"
+                    class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Update</button>
             </div>
         </form>
     </div>

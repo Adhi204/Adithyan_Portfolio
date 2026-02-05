@@ -242,3 +242,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 });
+
+
+//dashboard
+document.querySelectorAll('.project-title').forEach(el => {
+    el.addEventListener('click', () => {
+        const form = document.getElementById('update-project-form');
+        form.action = `/admin/${el.dataset.id}/updateProject`;
+
+        document.getElementById('update-project-id').value = el.dataset.id;
+        document.getElementById('update-title').value = el.dataset.title;
+        document.getElementById('update-description').value = el.dataset.description;
+        document.getElementById('update-github').value = el.dataset.github;
+        document.getElementById('update-live').value = el.dataset.live;
+
+        document.getElementById('update-project-modal').classList.remove('hidden');
+    });
+});
+
