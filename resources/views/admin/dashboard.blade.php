@@ -21,7 +21,6 @@
             </div>
         @endif
 
-        <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Admin Dashboard</h1>
 
@@ -190,9 +189,7 @@
                             </p>
                         </div>
 
-                        <!-- Actions -->
                         <div class="flex gap-3">
-                            <!-- View -->
                             <a href="{{ $resume->getResumeUrl() }}" target="_blank"
                                 class="px-4 py-2 rounded-md border text-sm text-slate-700 hover:bg-slate-50">View</a>
 
@@ -220,16 +217,11 @@
 
 <!-- Profile Update Modal -->
 <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 px-4">
-    <div class="bg-white rounded-xl w-full max-w-lg shadow-lg
-               max-h-[90vh] overflow-hidden">
-        <!-- Header -->
+    <div class="bg-white rounded-xl w-full max-w-lg shadow-lg max-h-[90vh] overflow-hidden">
         <div class="flex justify-between items-center px-6 py-4 border-b">
             <h3 class="text-xl font-semibold">Update Profile</h3>
-
             <button onclick="document.getElementById('profile-modal').classList.add('hidden')"
-                class="text-slate-500 hover:text-slate-700 text-2xl leading-none">
-                &times;
-            </button>
+                class="text-slate-500 hover:text-slate-700 text-2xl leading-none">&times;</button>
         </div>
 
         <!-- Scrollable Body -->
@@ -241,48 +233,57 @@
                 <div>
                     <label class="block text-sm font-medium">Name</label>
                     <input type="text" name="name" value="{{ $user->profile->name }}"
-                        class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2 
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Designation</label>
                     <input type="text" name="designation" value="{{ $user->profile->designation }}"
-                        class="mt-1 w-full rounded-md border-gray-300">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2 
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">About</label>
-                    <textarea name="about" rows="3" class="mt-1 w-full rounded-md border-gray-300">{{ $user->profile->about }}</textarea>
+                    <textarea name="about" rows="3"
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">{{ $user->profile->about }}</textarea>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Location</label>
                     <input type="text" name="location" value="{{ $user->profile->location }}"
-                        class="mt-1 w-full rounded-md border-gray-300">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Phone</label>
                     <input type="text" name="phone" value="{{ $user->profile->phone }}"
-                        class="mt-1 w-full rounded-md border-gray-300">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Email</label>
                     <input type="email" name="email" value="{{ $user->profile->email }}"
-                        class="mt-1 w-full rounded-md border-gray-300">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">LinkedIn</label>
                     <input type="url" name="linkedin_link" value="{{ $user->profile->linkedin_link }}"
-                        class="mt-1 w-full rounded-md border-gray-300">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">GitHub</label>
                     <input type="url" name="github_link" value="{{ $user->profile->github_link }}"
-                        class="mt-1 w-full rounded-md border-gray-300">
+                        class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
@@ -290,12 +291,9 @@
                     <input type="file" name="avatar" class="mt-1 w-full text-sm">
                 </div>
 
-                <!-- Footer -->
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" onclick="document.getElementById('profile-modal').classList.add('hidden')"
-                        class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">
-                        Cancel
-                    </button>
+                        class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">Cancel</button>
 
                     <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
                         Update
@@ -306,6 +304,7 @@
     </div>
 </div>
 
+
 <input type="checkbox" id="skill-modal-toggle" class="peer hidden">
 
 <!-- Add Skill Modal -->
@@ -314,38 +313,36 @@
 
     <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg
                 max-h-[80vh] overflow-y-auto">
-
-        <!-- Header -->
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold">Add Skill</h3>
 
-            <!-- Close -->
             <label for="skill-modal-toggle" class="cursor-pointer text-slate-500 hover:text-slate-700 text-xl">
                 &times;
             </label>
         </div>
 
-        <!-- Form -->
         <form method="POST" action="{{ route('admin.addSkill') }}" class="space-y-4">
             @csrf
 
             <div>
                 <label class="block text-sm font-medium">Name</label>
-                <input type="text" name="name" required class="mt-1 w-full rounded-md border-gray-300">
+                <input type="text" name="name" required
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Level</label>
-                <select name="level" required class="mt-1 w-full rounded-md border-gray-300">
+                <select name="level" required
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                     <option>Beginner</option>
                     <option>Intermediate</option>
                     <option>Expert</option>
                 </select>
             </div>
 
-            <!-- Actions -->
             <div class="flex justify-end gap-3 pt-4">
-                <!-- Cancel -->
                 <label for="skill-modal-toggle"
                     class="cursor-pointer px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">
                     Cancel
@@ -363,7 +360,6 @@
 <div id="resume-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">
     <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg max-h-[80vh] overflow-y-auto">
 
-        <!-- Header -->
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold">Update Resume</h3>
 
@@ -371,7 +367,6 @@
                 class="text-slate-500 hover:text-slate-700 text-xl">&times;</button>
         </div>
 
-        <!-- Form -->
         <form method="POST" action="{{ route('admin.updateResume') }}" enctype="multipart/form-data"
             class="space-y-4">
             @csrf
@@ -380,16 +375,20 @@
             <div>
                 <label class="block text-sm font-medium">Title</label>
                 <input type="text" name="title" required value="{{ $resume->title ?? '' }}"
-                    class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <!-- File -->
             <div>
                 <label class="block text-sm font-medium">Resume File (PDF)</label>
-                <input type="file" name="file" accept="application/pdf" required class="mt-1 w-full text-sm">
+                <input type="file" name="file" accept="application/pdf"
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                              transition-colors duration-200 text-sm">
             </div>
 
-            <!-- Actions -->
             <div class="flex justify-end gap-3 pt-4">
                 <button type="button" onclick="document.getElementById('resume-modal').classList.add('hidden')"
                     class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">
@@ -419,23 +418,34 @@
             <div>
                 <label class="block text-sm font-medium">Title</label>
                 <input type="text" name="title" required
-                    class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Description (one point per line)</label>
-                <textarea name="description" rows="5" required class="mt-1 w-full rounded-md border-gray-300"></textarea>
+                <textarea name="description" rows="5" required
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200"></textarea>
                 <p class="text-xs text-slate-400">Each line will be saved as a point.</p>
             </div>
 
             <div>
                 <label class="block text-sm font-medium">GitHub URL</label>
-                <input type="url" name="github_url" class="mt-1 w-full rounded-md border-gray-300">
+                <input type="url" name="github_url"
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Live URL</label>
-                <input type="url" name="live_url" class="mt-1 w-full rounded-md border-gray-300">
+                <input type="url" name="live_url"
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div class="flex justify-end gap-3 pt-4">
@@ -465,27 +475,34 @@
             <div>
                 <label class="block text-sm font-medium">Title</label>
                 <input type="text" id="update-title" name="title" required
-                    class="mt-1 w-full rounded-md border-gray-300">
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Description (one point per line)</label>
                 <textarea id="update-description" name="description" rows="5" required
-                    class="mt-1 w-full rounded-md border-gray-300"></textarea>
-                <p class="text-xs text-slate-400">Enter each point on a new line.
-                </p>
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200"></textarea>
+                <p class="text-xs text-slate-400">Enter each point on a new line.</p>
             </div>
 
             <div>
                 <label class="block text-sm font-medium">GitHub URL</label>
                 <input type="url" id="update-github" name="github_url"
-                    class="mt-1 w-full rounded-md border-gray-300">
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Live URL</label>
                 <input type="url" id="update-live" name="live_url"
-                    class="mt-1 w-full rounded-md border-gray-300">
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div class="flex justify-end gap-3 pt-4">
@@ -515,13 +532,17 @@
             <div>
                 <label class="block text-sm font-medium">Title</label>
                 <input type="text" id="update-service-title" name="title" required
-                    class="mt-1 w-full rounded-md border-gray-300">
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Description</label>
                 <textarea id="update-service-description" name="description" rows="4" required
-                    class="mt-1 w-full rounded-md border-gray-300"></textarea>
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                           transition-colors duration-200"></textarea>
             </div>
 
             <div class="flex justify-end gap-3 pt-4">
