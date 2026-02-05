@@ -55,7 +55,7 @@ class DashboardController extends Controller
                 Route::post('deleteProject', 'deleteProject')->name('admin.deleteProject');
 
                 Route::post('addSkill', 'addSkill')->name('admin.addSkill');
-                Route::post('deleteSkill', 'deleteSkill')->name('admin.deleteSkill');
+                Route::post('{skill}/deleteSkill', 'deleteSkill')->name('admin.deleteSkill');
 
                 Route::post('updateResume', 'updateResume')->name('admin.updateResume');
 
@@ -194,26 +194,18 @@ class DashboardController extends Controller
 
         $resume = Resume::where('user_id', $user->id)->first();
 
+        // Update title (safe validated data)
+        if ($request->safe()->title) {
+            $resume->title = $request->safe()->title;
+        }
+
+        // Handle file upload using model method
         if ($request->hasFile('file')) {
-            if ($resume && $resume->file_name) {
-                Storage::delete('resumes/' . $resume->file_name);
-            }
-
-            $filePath = $request->file('file')->store('resumes');
+            $resume->saveResume($request->file('file'));
         }
 
-        if ($resume) {
-            $resume->update([
-                'title' => $request->safe()->title,
-                'file_name' => basename($filePath),
-            ]);
-        } else {
-            Resume::create([
-                'user_id' => $user->id,
-                'title' => $request->safe()->title,
-                'file_name' => basename($filePath),
-            ]);
-        }
+
+        $resume->save();
 
         return back()->with([
             'message' => 'Resume updated successfully',

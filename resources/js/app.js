@@ -112,39 +112,44 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
-        //RESUME
+        // RESUME
         const resumeBox = document.getElementById("resume-box");
 
         if (resumeBox && data.resume) {
+            const resumeUrl = data.resume.file_name
+                ? `/storage/documents/documents/${data.resume.file_name}`
+                : null;
+
             const updatedDate = new Date(
                 data.resume.updated_at,
             ).toLocaleDateString();
 
             resumeBox.innerHTML = `
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
-            <div>
-                <button
-                    id="resume-open"
-                    class="text-lg font-semibold text-slate-900 hover:text-indigo-600 transition"
-                >
-                    ${data.resume.title ?? "View Resume"}
-                </button>
+        <div>
+            <p class="text-lg font-semibold text-slate-900">
+                ${data.resume.title ?? "Resume"}
+            </p>
 
-                <p class="mt-1 text-sm text-slate-500">
-                    Last updated: ${updatedDate}
-                </p>
-            </div>
-
-            <a
-                href="/storage/resumes/${data.resume.file_name}"
-                target="_blank"
-                class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition"
-            >
-                Open PDF
-            </a>
+            <p class="mt-1 text-sm text-slate-500">
+                Last updated: ${updatedDate}
+            </p>
         </div>
+
+        ${
+            resumeUrl
+                ? `<a href="${resumeUrl}" target="_blank"
+                     class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition">
+                     View PDF
+                   </a>`
+                : `<span class="text-sm text-slate-500">No resume available</span>`
+        }
+
+    </div>
     `;
+        } else {
+            resumeBox.innerHTML = `<p class="text-sm text-slate-500">No resume uploaded.</p>`;
         }
 
         // WHAT I DO / SERVICES

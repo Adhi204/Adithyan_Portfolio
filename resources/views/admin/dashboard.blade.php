@@ -72,12 +72,38 @@
 
             <!-- Skills -->
             <div class="rounded-xl bg-white p-6 shadow-sm">
-                <h2 class="font-semibold text-xl mb-4">Skills</h2>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="font-semibold text-xl">Skills</h2>
 
-                <ul class="list-disc list-inside space-y-1 text-sm">
-                    @foreach ($user->skills as $skill)
-                        <li>{{ $skill->name }} ({{ $skill->level }})</li>
-                    @endforeach
+                    <!-- Add Skill Button -->
+                    <label for="skill-modal-toggle"
+                        class="cursor-pointer rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 text-xs">
+                        + Add Skill
+                    </label>
+
+                </div>
+
+                <ul class="space-y-2 text-sm">
+                    @forelse ($user->skills as $skill)
+                        <li class="flex items-center justify-between rounded-md border px-3 py-2">
+                            <span>
+                                {{ $skill->name }}
+                                <span class="text-slate-500">({{ $skill->level }})</span>
+                            </span>
+
+                            <!-- Remove -->
+                            <form method="POST" action="{{ route('admin.deleteSkill', $skill) }}">
+                                @csrf
+
+                                <button onclick="return confirm('Remove this skill?')"
+                                    class="text-red-600 hover:text-red-800 text-sm">
+                                    ✕
+                                </button>
+                            </form>
+                        </li>
+                    @empty
+                        <p class="text-slate-500">No skills added yet.</p>
+                    @endforelse
                 </ul>
             </div>
 
@@ -129,15 +155,40 @@
                 @endphp
 
                 @if ($resume)
-                    <a href="/storage/resumes/{{ $resume->file_name }}" target="_blank"
-                        class="text-indigo-600 hover:underline">
-                        {{ $resume->title }}
-                    </a>
+                    <div class="flex items-center justify-between gap-4">
+                        <!-- Title -->
+                        <div>
+                            <p class="font-medium text-slate-900">
+                                {{ $resume->title }}
+                            </p>
+
+                            <p class="text-sm text-slate-500">
+                                Last updated: {{ $resume->updated_at->format('d M Y') }}
+                            </p>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex gap-3">
+                            <!-- View -->
+                            <a href="{{ $resume->getResumeUrl() }}" target="_blank"
+                                class="px-4 py-2 rounded-md border text-sm text-slate-700 hover:bg-slate-50">View</a>
+
+                            <!-- Update -->
+                            <button onclick="document.getElementById('resume-modal').classList.remove('hidden')"
+                                class="px-4 py-2 rounded-md bg-indigo-600 text-sm text-white hover:bg-indigo-700">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 @else
                     <p class="text-sm text-slate-500">No resume uploaded.</p>
+
+                    <button onclick="document.getElementById('resume-modal').classList.remove('hidden')"
+                        class="mt-3 px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
+                        Upload Resume
+                    </button>
                 @endif
             </div>
-
         </div>
     </div>
 @endsection
@@ -227,5 +278,103 @@
                 </div>
             </form>
         </div>
+    </div>
+</div>
+
+<input type="checkbox" id="skill-modal-toggle" class="peer hidden">
+
+<!-- Add Skill Modal -->
+<div class="fixed inset-0 z-50 hidden peer-checked:flex
+           items-center justify-center bg-black/50">
+
+    <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg
+                max-h-[80vh] overflow-y-auto">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Add Skill</h3>
+
+            <!-- Close -->
+            <label for="skill-modal-toggle" class="cursor-pointer text-slate-500 hover:text-slate-700 text-xl">
+                &times;
+            </label>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" action="{{ route('admin.addSkill') }}" class="space-y-4">
+            @csrf
+
+            <div>
+                <label class="block text-sm font-medium">Name</label>
+                <input type="text" name="name" required class="mt-1 w-full rounded-md border-gray-300">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Level</label>
+                <select name="level" required class="mt-1 w-full rounded-md border-gray-300">
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Expert</option>
+                </select>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 pt-4">
+                <!-- Cancel -->
+                <label for="skill-modal-toggle"
+                    class="cursor-pointer px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">
+                    Cancel
+                </label>
+
+                <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Resume Modal -->
+<div id="resume-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">
+    <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg max-h-[80vh] overflow-y-auto">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Update Resume</h3>
+
+            <button onclick="document.getElementById('resume-modal').classList.add('hidden')"
+                class="text-slate-500 hover:text-slate-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" action="{{ route('admin.updateResume') }}" enctype="multipart/form-data"
+            class="space-y-4">
+            @csrf
+
+            <!-- Title -->
+            <div>
+                <label class="block text-sm font-medium">Title</label>
+                <input type="text" name="title" required value="{{ $resume->title ?? '' }}"
+                    class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- File -->
+            <div>
+                <label class="block text-sm font-medium">Resume File (PDF)</label>
+                <input type="file" name="file" accept="application/pdf" required class="mt-1 w-full text-sm">
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="document.getElementById('resume-modal').classList.add('hidden')"
+                    class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">
+                    Cancel
+                </button>
+
+                <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
+                    Save
+                </button>
+            </div>
+        </form>
     </div>
 </div>
