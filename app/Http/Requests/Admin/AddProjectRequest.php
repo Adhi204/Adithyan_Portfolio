@@ -23,7 +23,7 @@ class AddProjectRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string'],
-            'description' => ['required', 'string'],
+            'description' => ['required'],
             'github_url' => ['nullable', 'string'],
             'live_url' => ['nullable', 'string'],
         ];

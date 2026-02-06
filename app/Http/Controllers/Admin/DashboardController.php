@@ -17,7 +17,6 @@ use App\Models\UserProfile;
 use App\Models\UserSkill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -51,15 +50,15 @@ class DashboardController extends Controller
                 Route::post('updateProfile', 'updateProfile')->name('admin.updateProfile');
 
                 Route::post('addProject', 'addProject')->name('admin.addProject');
-                Route::post('updateProject', 'updateProject')->name('admin.updateProject');
-                Route::post('deleteProject', 'deleteProject')->name('admin.deleteProject');
+                Route::post('{project}/updateProject', 'updateProject')->name('admin.updateProject');
+                Route::post('{project}/deleteProject', 'deleteProject')->name('admin.deleteProject');
 
                 Route::post('addSkill', 'addSkill')->name('admin.addSkill');
-                Route::post('deleteSkill', 'deleteSkill')->name('admin.deleteSkill');
+                Route::post('{skill}/deleteSkill', 'deleteSkill')->name('admin.deleteSkill');
 
                 Route::post('updateResume', 'updateResume')->name('admin.updateResume');
 
-                Route::post('updateService', 'updateService')->name('admin.updateService');
+                Route::post('{service}/updateService', 'updateService')->name('admin.updateService');
             });
     }
 
@@ -92,10 +91,7 @@ class DashboardController extends Controller
 
 
         if ($request->hasFile('avatar')) {
-            if ($profile->avatar) {
-                Storage::delete($profile->avatar);
-            }
-            $profile->avatar = $request->file('avatar')->store('avatars');
+            $profile->saveAvatar($request->file('avatar'));
         }
 
         $profile->save();
@@ -116,7 +112,7 @@ class DashboardController extends Controller
         Project::create([
             'user_id' => $user->id,
             'title' => $request->safe()->title,
-            'description' => $request->safe()->description,
+            'description' => array_filter(array_map('trim', explode("\n", $request->description))),
             'github_url' => $request->safe()->github_url,
             'live_url' => $request->safe()->live_url
         ]);
@@ -127,14 +123,11 @@ class DashboardController extends Controller
         ]);
     }
 
-    /**
-     * Update an existing project in the user's portfolio.
-     */
     public function updateProject(UpdateProjectRequest $request, Project $project)
     {
-        $project::update([
+        $project->update([
             'title' => $request->safe()->title,
-            'description' => $request->safe()->description,
+            'description' => array_filter(array_map('trim', explode("\n", $request->description))),
             'github_url' => $request->safe()->github_url,
             'live_url' => $request->safe()->live_url
         ]);
@@ -197,26 +190,18 @@ class DashboardController extends Controller
 
         $resume = Resume::where('user_id', $user->id)->first();
 
+        // Update title (safe validated data)
+        if ($request->safe()->title) {
+            $resume->title = $request->safe()->title;
+        }
+
+        // Handle file upload using model method
         if ($request->hasFile('file')) {
-            if ($resume && $resume->file_name) {
-                Storage::delete('resumes/' . $resume->file_name);
-            }
-
-            $filePath = $request->file('file')->store('resumes');
+            $resume->saveResume($request->file('file'));
         }
 
-        if ($resume) {
-            $resume->update([
-                'title' => $request->safe()->title,
-                'file_name' => basename($filePath),
-            ]);
-        } else {
-            Resume::create([
-                'user_id' => $user->id,
-                'title' => $request->safe()->title,
-                'file_name' => basename($filePath),
-            ]);
-        }
+
+        $resume->save();
 
         return back()->with([
             'message' => 'Resume updated successfully',
@@ -234,6 +219,9 @@ class DashboardController extends Controller
             'description' => $request->safe()->description,
         ]);
 
-        return redirect()->back()->with('success', 'Service updated successfully.');
+        return redirect()->back()->with([
+            'message' => 'Service updated successfully',
+            'message_type' => 'success',
+        ]);
     }
 }

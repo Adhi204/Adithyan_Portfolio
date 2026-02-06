@@ -60,19 +60,19 @@ return [
             'report' => false,
         ],
 
-        //disk for documents
-        'documents' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/documents'),
-            'url' => env('APP_URL') . '/storage/documents',
-            'visibility' => 'private',
-        ],
-
         //disk for images
         'images' => [
             'driver' => 'local',
             'root' => storage_path('app/public/images'),
             'url' => env('APP_URL') . '/storage/images',
+            'visibility' => 'public',
+        ],
+
+        //disk for documents
+        'documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/documents'),
+            'url' => env('APP_URL') . '/storage/documents',
             'visibility' => 'public',
         ],
 

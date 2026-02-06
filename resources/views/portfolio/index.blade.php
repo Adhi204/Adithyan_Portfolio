@@ -13,7 +13,7 @@
            ring-1 ring-white/10
            transition hover:scale-[1.02]">
                 <img id="avatar" src="https://via.placeholder.com/300x400" alt="Profile Avatar"
-                    class="h-full w-full object-cover filter grayscale-[10%]">
+                    class="h-full w-full object-cover">
             </div>
 
             <!-- Info -->
@@ -74,7 +74,6 @@
         </div>
     </section>
 
-
     <!-- CONTACT -->
     <section id="contact" class="mt-24 scroll-mt-24">
         <div class="rounded-3xl bg-slate-900 p-10 text-white shadow-xl">
@@ -89,42 +88,42 @@
             <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
                 <!-- Email -->
-                <a href="mailto:youremail@example.com"
-                    class="group flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
+                <a id="contact-email" href="#"
+                    class="group hidden flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
                     <div class="text-2xl shrink-0">📧</div>
                     <div class="min-w-0">
                         <p class="text-sm text-slate-400 group-hover:text-indigo-100">Email</p>
-                        <p class="font-semibold break-all">youremail@example.com</p>
+                        <p id="email-text" class="font-semibold break-all"></p>
                     </div>
                 </a>
 
                 <!-- Phone -->
-                <a href="tel:+919876543210"
-                    class="group flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
+                <a id="contact-phone" href="#"
+                    class="group hidden flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
                     <div class="text-2xl shrink-0">📞</div>
                     <div class="min-w-0">
                         <p class="text-sm text-slate-400 group-hover:text-indigo-100">Phone</p>
-                        <p class="font-semibold">+91 98765 43210</p>
+                        <p id="phone-text" class="font-semibold"></p>
                     </div>
                 </a>
 
                 <!-- GitHub -->
-                <a href="https://github.com/yourusername" target="_blank"
-                    class="group flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
+                <a id="contact-github" href="#" target="_blank"
+                    class="group hidden flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
                     <div class="text-2xl shrink-0">💻</div>
                     <div class="min-w-0">
                         <p class="text-sm text-slate-400 group-hover:text-indigo-100">GitHub</p>
-                        <p class="font-semibold break-all">github.com/yourusername</p>
+                        <p id="github-text" class="font-semibold break-all"></p>
                     </div>
                 </a>
 
                 <!-- LinkedIn -->
-                <a href="https://linkedin.com/in/yourusername" target="_blank"
-                    class="group flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
+                <a id="contact-linkedin" href="#" target="_blank"
+                    class="group hidden flex gap-4 rounded-xl bg-slate-800 p-5 transition hover:bg-indigo-600">
                     <div class="text-2xl shrink-0">🔗</div>
                     <div class="min-w-0">
                         <p class="text-sm text-slate-400 group-hover:text-indigo-100">LinkedIn</p>
-                        <p class="font-semibold break-all">linkedin.com/in/yourusername</p>
+                        <p id="linkedin-text" class="font-semibold break-all"></p>
                     </div>
                 </a>
 
