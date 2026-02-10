@@ -81,6 +81,11 @@ class User extends Authenticatable
         return $this->hasMany(Service::class)->orderBy('order');
     }
 
+    public function educations(): HasMany
+    {
+        return $this->hasMany(UserEducation::class);
+    }
+
     /**
      * Log an activity for this user.
      *

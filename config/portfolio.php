@@ -16,10 +16,10 @@ return [
         'name' => 'Adithyan C',
         'designation' => 'Laravel Developer',
         'about' => 'I build scalable backend systems using Laravel.',
-        'location' => 'India',
+        'location' => 'Kannur,Kerala',
         'avatar' => null,
-        'phone' => 1234567895,
-        'email' => 'test@gmail.com',
+        'phone' => 8590719402,
+        'email' => 'adithyanc204@gmail.com',
     ],
 
     'skills' => [
