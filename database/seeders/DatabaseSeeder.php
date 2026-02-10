@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Resume;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\UserEducation;
 use App\Models\UserProfile;
 use App\Models\UserSkill;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -57,6 +58,13 @@ class DatabaseSeeder extends Seeder
             Service::create([
                 'user_id' => $user->id,
                 ...$service,
+            ]);
+        }
+
+        foreach ($data['education'] as $education) {
+            UserEducation::create([
+                'user_id' => $user->id,
+                ...$education,
             ]);
         }
     }

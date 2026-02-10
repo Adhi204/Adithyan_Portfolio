@@ -84,5 +84,18 @@ return [
         ],
     ],
 
+    'education' => [
+        [
+            'institution' => 'Kannur University',
+            'qualification' => 'BCA',
+            'field' => 'BCA',
+        ],
+        [
+            'institution' => 'calicut University',
+            'qualification' => 'MCA',
+            'field' => 'MCA',
+        ],
+    ]
+
 
 ];
