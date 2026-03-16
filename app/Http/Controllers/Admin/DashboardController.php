@@ -67,21 +67,8 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        $user = auth()->user();
-
-        $profile = UserProfile::find($user->id);
-        $skills = UserSkill::all();
-        $projects = Project::all();
-        $resumes = Resume::all();
-        $services = Service::all();
-
-        return view('admin.dashboard')->with([
-            'profile' => $profile,
-            'skills' => $skills,
-            'projects' => $projects,
-            'resumes' => $resumes,
-            'services' => $services,
-        ]);
+        $user = User::with(['profile', 'skills', 'projects', 'resumes'])->first();
+        return view('admin.dashboard')->with('user', $user);
     }
 
     /**
@@ -91,17 +78,16 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $profile = UserProfile::firstOrCreate(
-            ['user_id' => $user->id],
-            [
-                'name' => $request->safe()->name,
-                'designation' => $request->safe()->designation,
-                'about' => $request->safe()->about,
-                'location' => $request->safe()->location,
-                'phone' => $request->safe()->phone,
-                'email' => $request->safe()->email,
-            ]
-        );
+        $profile = UserProfile::where('user_id', $user->id)->first();
+
+        $profile->name = $request->safe()->name;
+        $profile->designation = $request->safe()->designation;
+        $profile->about = $request->safe()->about;
+        $profile->location = $request->safe()->location;
+        $profile->phone = $request->safe()->phone;
+        $profile->email = $request->safe()->email;
+        $profile->linkedin_link = $request->safe()->linkedin_link;
+        $profile->github_link = $request->safe()->github_link;
 
 
         if ($request->hasFile('avatar')) {
@@ -202,19 +188,18 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $resume = Resume::firstOrNew([
-            'user_id' => $user->id
-        ]);
+        $resume = Resume::where('user_id', $user->id)->first();
 
-        // Update title
+        // Update title (safe validated data)
         if ($request->safe()->title) {
             $resume->title = $request->safe()->title;
         }
 
-        // Upload file
+        // Handle file upload using model method
         if ($request->hasFile('file')) {
             $resume->saveResume($request->file('file'));
         }
+
 
         $resume->save();
 
