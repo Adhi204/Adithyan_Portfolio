@@ -39,25 +39,25 @@
                 <h2 class="font-semibold text-xl mb-4">Profile</h2>
 
                 <div class="space-y-2 text-sm text-slate-700">
-                    <p><strong>Name:</strong> {{ $user->profile->name }}</p>
-                    <p><strong>Designation:</strong> {{ $user->profile->designation }}</p>
-                    <p><strong>About:</strong> {{ $user->profile->about }}</p>
-                    <p><strong>Location:</strong> {{ $user->profile->location }}</p>
+                    <p><strong>Name:</strong> {{ $user->profile?->name }}</p>
+                    <p><strong>Designation:</strong> {{ $user->profile?->designation }}</p>
+                    <p><strong>About:</strong> {{ $user->profile?->about }}</p>
+                    <p><strong>Location:</strong> {{ $user->profile?->location }}</p>
 
-                    <p><strong>Phone:</strong> {{ $user->profile->phone }}</p>
-                    <p><strong>Email:</strong> {{ $user->profile->email }}</p>
+                    <p><strong>Phone:</strong> {{ $user->profile?->phone }}</p>
+                    <p><strong>Email:</strong> {{ $user->profile?->email }}</p>
 
-                    @if ($user->profile->linkedin_link)
+                    @if ($user->profile?->linkedin_link)
                         <p>
                             <strong>LinkedIn:</strong>
-                            <a href="{{ $user->profile->linkedin_link }}" target="_blank"
+                            <a href="{{ $user->profile?->linkedin_link }}" target="_blank"
                                 class="text-indigo-600 hover:underline">
                                 View Profile
                             </a>
                         </p>
                     @endif
 
-                    @if ($user->profile->github_link)
+                    @if ($user->profile?->github_link)
                         <p>
                             <strong>GitHub:</strong>
                             <a href="{{ $user->profile->github_link }}" target="_blank"
