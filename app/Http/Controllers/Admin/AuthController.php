@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 class AuthController extends Controller
@@ -25,6 +27,9 @@ class AuthController extends Controller
                 Route::get('/login', 'show')->name('admin.show');
                 Route::post('/login', 'login')->name('admin.login');
                 Route::post('/logout', 'logout')->name('admin.logout');
+
+                Route::get('/registerForm', 'registerForm')->name('admin.registerForm');
+                Route::post('/register', 'register')->name('admin.register');
             });
     }
 
@@ -65,5 +70,32 @@ class AuthController extends Controller
             "message_type" => "success",
 
         ]);
+    }
+
+    /**
+     * Show register form
+     */
+    public function registerForm(Request $request)
+    {
+        return view('admin.register');
+    }
+
+    /**
+     * Register a new user
+     */
+    public function register(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'is_admin' => true,
+        ]);
+
+        return redirect()->route('admin.login');
     }
 }

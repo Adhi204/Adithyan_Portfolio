@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="max-w-md mx-auto mt-20 p-6 rounded-xl shadow-lg bg-white">
-        <h1 class="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+        <h1 class="text-2xl font-bold mb-6 text-center">Admin Register</h1>
 
-        <form method="POST" action="{{ route('admin.login') }}">
+        <form method="POST" action="{{ route('admin.register') }}">
             @csrf
 
             <div class="mb-4">
@@ -14,34 +14,37 @@
                        border-gray-300 px-4 py-3 text-base shadow-sm
                        focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500
                        transition-colors duration-200" />
+
                 @error('email')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="mb-6">
+            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" name="password"
                     class="mt-2 block w-full rounded-lg border-2 
                        border-gray-300 px-4 py-3 text-base shadow-sm
                        focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500
                        transition-colors duration-200" />
+
                 @error('password')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <input type="password" name="password_confirmation"
+                    class="mt-2 block w-full rounded-lg border-2 
+                       border-gray-300 px-4 py-3 text-base shadow-sm
+                       focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500
+                       transition-colors duration-200" />
+            </div>
+
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">
-                Login
+                Register
             </button>
-
-            <p class="text-center text-sm text-gray-600 mt-4">
-                Don't have an account?
-                <a href="{{ route('admin.registerForm') }}" class="text-indigo-600 hover:underline font-medium">
-                    Register
-                </a>
-            </p>
-
         </form>
     </div>
 @endsection
