@@ -67,7 +67,14 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        $user = User::with(['profile', 'skills', 'projects', 'resumes'])->first();
+        $user = User::with([
+            'profile',
+            'skills',
+            'projects',
+            'resumes',
+            'services'
+        ])->first();
+
         return view('admin.dashboard')->with('user', $user);
     }
 
@@ -212,15 +219,18 @@ class DashboardController extends Controller
     /**
      * Update the user's service information.
      */
-    public function updateService(UpdateServiceRequest $request, Service $service)
+    public function updateService(UpdateServiceRequest $request)
     {
-        $service->update([
-            'title' => $request->safe()->title,
-            'description' => $request->safe()->description,
-        ]);
+        Service::updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'title' => $request->safe()->title,
+                'description' => $request->safe()->description
+            ]
+        );
 
-        return redirect()->back()->with([
-            'message' => 'Service updated successfully',
+        return back()->with([
+            'message' => 'Service saved successfully',
             'message_type' => 'success',
         ]);
     }

@@ -150,26 +150,65 @@
             </div>
 
             <!-- Services -->
-            @foreach ($user->services as $service)
-                <div class="service-card rounded-lg border p-4 hover:bg-slate-50 flex justify-between items-start"
-                    data-id="{{ $service->id }}" data-title="{{ $service->title }}"
-                    data-description="{{ $service->description }}">
-                    <div>
-                        <h3 class="font-semibold mb-1">{{ $service->title }}</h3>
+            <div class="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
 
-                        <p class="text-sm text-slate-600">
-                            {{ $service->description }}
-                        </p>
-                    </div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-semibold text-xl">Services</h2>
 
-                    <button type="button"
-                        class="update-service-btn text-indigo-600 hover:text-indigo-800 text-sm font-medium"
-                        data-id="{{ $service->id }}" data-title="{{ $service->title }}"
-                        data-description="{{ $service->description }}">
-                        Update
+                    <!-- Add Service Button -->
+                    <button onclick="document.getElementById('update-service-modal').classList.remove('hidden')"
+                        class="bg-indigo-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-indigo-700 transition">
+                        + Add Service
                     </button>
                 </div>
-            @endforeach
+
+                <div class="grid gap-4">
+
+                    @forelse ($user->services as $service)
+                        <div class="service-card flex justify-between items-start rounded-lg border p-4 hover:shadow-md transition"
+                            data-id="{{ $service->id }}" data-title="{{ $service->title }}"
+                            data-description="{{ $service->description }}">
+
+                            <!-- Service Content -->
+                            <div>
+                                <h3 class="font-semibold mb-1">
+                                    {{ $service->title }}
+                                </h3>
+
+                                <p class="text-sm text-slate-600">
+                                    {{ $service->description }}
+                                </p>
+                            </div>
+
+                            <!-- Update Button -->
+                            <button type="button" class="update-service-btn text-indigo-600 hover:text-indigo-800 text-sm"
+                                data-id="{{ $service->id }}" data-title="{{ $service->title }}"
+                                data-description="{{ $service->description }}" onclick="openServiceModal(this)">
+                                Update
+                            </button>
+
+                        </div>
+
+                    @empty
+
+                        <!-- Empty State -->
+                        <div class="flex justify-between items-center border rounded-lg p-4">
+
+                            <p class="text-slate-500 text-sm">
+                                No services added yet.
+                            </p>
+
+                            <button onclick="document.getElementById('update-service-modal').classList.remove('hidden')"
+                                class="text-indigo-600 hover:text-indigo-800 text-sm">
+                                Add Service
+                            </button>
+
+                        </div>
+                    @endforelse
+
+                </div>
+
+            </div>
 
             <!-- Resume -->
             <div class="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
