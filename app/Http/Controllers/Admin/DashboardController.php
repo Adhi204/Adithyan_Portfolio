@@ -67,8 +67,19 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        $user = User::with(['profile', 'skills', 'projects', 'resumes'])->first();
-        return view('admin.dashboard')->with('user', $user);
+        $user = auth()->user()->load([
+            'profile',
+            'skills',
+            'projects',
+            'resumes',
+            'services'
+        ]);
+
+        if (!$user->profile) {
+            $user->profile()->create([]);
+        }
+
+        return view('admin.dashboard', compact('user'));
     }
 
     /**
@@ -188,7 +199,9 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $resume = Resume::where('user_id', $user->id)->first();
+        $resume = Resume::firstOrCreate([
+            'user_id' => $user->id
+        ]);
 
         // Update title (safe validated data)
         if ($request->safe()->title) {
