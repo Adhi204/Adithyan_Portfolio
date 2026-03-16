@@ -150,11 +150,10 @@
             </div>
 
             <!-- Services -->
-            @foreach ($services as $service)
+            @foreach ($user->services as $service)
                 <div class="service-card rounded-lg border p-4 hover:bg-slate-50 flex justify-between items-start"
                     data-id="{{ $service->id }}" data-title="{{ $service->title }}"
                     data-description="{{ $service->description }}">
-
                     <div>
                         <h3 class="font-semibold mb-1">{{ $service->title }}</h3>
 
@@ -163,14 +162,12 @@
                         </p>
                     </div>
 
-                    <!-- Update Button -->
                     <button type="button"
                         class="update-service-btn text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                         data-id="{{ $service->id }}" data-title="{{ $service->title }}"
                         data-description="{{ $service->description }}">
                         Update
                     </button>
-
                 </div>
             @endforeach
 
