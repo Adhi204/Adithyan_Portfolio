@@ -24,48 +24,48 @@ class DatabaseSeeder extends Seeder
     {
         $data = config('portfolio');
 
-        $user = User::create([
-            'email' => $data['user']['email'],
-            'password' => Hash::make($data['user']['password']),
-            'is_admin' => $data['user']['is_admin'] ?? false,
-        ]);
+        // $user = User::create([
+        //     'email' => $data['user']['email'],
+        //     'password' => Hash::make($data['user']['password']),
+        //     'is_admin' => $data['user']['is_admin'] ?? false,
+        // ]);
 
-        UserProfile::create([
-            'user_id' => $user->id,
-            ...$data['profile'],
-        ]);
+        // UserProfile::create([
+        //     'user_id' => $user->id,
+        //     ...$data['profile'],
+        // ]);
 
-        foreach ($data['skills'] as $skill) {
-            UserSkill::create([
-                'user_id' => $user->id,
-                ...$skill,
-            ]);
-        }
+        // foreach ($data['skills'] as $skill) {
+        //     UserSkill::create([
+        //         'user_id' => $user->id,
+        //         ...$skill,
+        //     ]);
+        // }
 
-        foreach ($data['projects'] as $project) {
-            Project::create([
-                'user_id' => $user->id,
-                ...$project,
-            ]);
-        }
+        // foreach ($data['projects'] as $project) {
+        //     Project::create([
+        //         'user_id' => $user->id,
+        //         ...$project,
+        //     ]);
+        // }
 
-        Resume::create([
-            'user_id' => $user->id,
-            ...$data['resume'],
-        ]);
+        // Resume::create([
+        //     'user_id' => $user->id,
+        //     ...$data['resume'],
+        // ]);
 
-        foreach ($data['services'] as $service) {
-            Service::create([
-                'user_id' => $user->id,
-                ...$service,
-            ]);
-        }
+        // foreach ($data['services'] as $service) {
+        //     Service::create([
+        //         'user_id' => $user->id,
+        //         ...$service,
+        //     ]);
+        // }
 
-        foreach ($data['education'] as $education) {
-            UserEducation::create([
-                'user_id' => $user->id,
-                ...$education,
-            ]);
-        }
+        // foreach ($data['education'] as $education) {
+        //     UserEducation::create([
+        //         'user_id' => $user->id,
+        //         ...$education,
+        //     ]);
+        // }
     }
 }
