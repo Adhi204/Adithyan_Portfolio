@@ -75,11 +75,9 @@ class DashboardController extends Controller
             'services'
         ]);
 
-        if (!$user->profile) {
-            $user->profile()->create([]);
-        }
-
-        return view('admin.dashboard', compact('user'));
+        return view('admin.dashboard')->with([
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -89,16 +87,17 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $profile = UserProfile::where('user_id', $user->id)->first();
-
-        $profile->name = $request->safe()->name;
-        $profile->designation = $request->safe()->designation;
-        $profile->about = $request->safe()->about;
-        $profile->location = $request->safe()->location;
-        $profile->phone = $request->safe()->phone;
-        $profile->email = $request->safe()->email;
-        $profile->linkedin_link = $request->safe()->linkedin_link;
-        $profile->github_link = $request->safe()->github_link;
+        $profile = UserProfile::firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'name' => $request->safe()->name,
+                'designation' => $request->safe()->designation,
+                'about' => $request->safe()->about,
+                'location' => $request->safe()->location,
+                'phone' => $request->safe()->phone,
+                'email' => $request->safe()->email,
+            ]
+        );
 
 
         if ($request->hasFile('avatar')) {

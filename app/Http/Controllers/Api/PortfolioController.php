@@ -25,7 +25,7 @@ class PortfolioController extends Controller
         }
 
         return response()->json([
-            'profile' => $user->profile->toResource(),
+            'profile' => $user->profile ? $user->profile?->toResource() : null,
             'skills' => $user->skills,
             'projects' => $user->projects,
             'resume' => $user->resumes->first(),
