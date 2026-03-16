@@ -8,7 +8,7 @@ return [
 
     'user' => [
         'email' => 'adithyanc149@gmail.com',
-        'password' => '',
+        'password' => env('PORTFOLIO_ADMIN_PASSWORD'),
         'is_admin' => true,
     ],
 
