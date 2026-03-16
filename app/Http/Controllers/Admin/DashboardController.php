@@ -198,20 +198,19 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $resume = Resume::firstOrCreate([
+        $resume = Resume::firstOrNew([
             'user_id' => $user->id
         ]);
 
-        // Update title (safe validated data)
+        // Update title
         if ($request->safe()->title) {
             $resume->title = $request->safe()->title;
         }
 
-        // Handle file upload using model method
+        // Upload file
         if ($request->hasFile('file')) {
             $resume->saveResume($request->file('file'));
         }
-
 
         $resume->save();
 

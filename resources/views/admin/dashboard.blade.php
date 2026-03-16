@@ -150,22 +150,22 @@
             </div>
 
             <!-- Services -->
-            <div class="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
-                <h2 class="font-semibold text-xl mb-4">Services</h2>
+            <div class="rounded-lg border p-4 flex justify-between items-start">
 
-                <div class="grid gap-4 md:grid-cols-3">
-                    @forelse ($user->services as $service)
-                        <div class="rounded-lg border p-4 cursor-pointer service-card" data-id="{{ $service->id }}"
-                            data-title="{{ $service->title }}" data-description="{{ $service->description }}">
-                            <h3 class="font-semibold mb-1">{{ $service->title }}</h3>
-                            <p class="text-sm text-slate-600">
-                                {{ $service->description }}
-                            </p>
-                        </div>
-                    @empty
-                        <p class="text-sm text-slate-500">No services added yet.</p>
-                    @endforelse
+                <div>
+                    <h3 class="font-semibold mb-1">{{ $service->title }}</h3>
+                    <p class="text-sm text-slate-600">
+                        {{ $service->description }}
+                    </p>
                 </div>
+
+                <!-- Update Button -->
+                <button class="text-indigo-600 hover:text-indigo-800 text-sm update-service-btn"
+                    data-id="{{ $service->id }}" data-title="{{ $service->title }}"
+                    data-description="{{ $service->description }}">
+                    ✎
+                </button>
+
             </div>
 
             <!-- Resume -->
