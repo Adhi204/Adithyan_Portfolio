@@ -67,16 +67,20 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        $user = auth()->user()->load([
-            'profile',
-            'skills',
-            'projects',
-            'resumes',
-            'services'
-        ]);
+        $user = auth()->user();
+
+        $profile = UserProfile::find($user->id);
+        $skills = UserSkill::all();
+        $projects = Project::all();
+        $resumes = Resume::all();
+        $services = Service::all();
 
         return view('admin.dashboard')->with([
-            'user' => $user,
+            'profile' => $profile,
+            'skills' => $skills,
+            'projects' => $projects,
+            'resumes' => $resumes,
+            'services' => $services,
         ]);
     }
 
