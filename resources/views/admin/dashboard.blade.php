@@ -50,7 +50,7 @@
                     @if ($user->profile?->linkedin_link)
                         <p>
                             <strong>LinkedIn:</strong>
-                            <a href="{{ $user->profile?->linkedin_link }}" target="_blank"
+                            <a href="{{ $user->profile->linkedin_link }}" target="_blank"
                                 class="text-indigo-600 hover:underline">
                                 View Profile
                             </a>
@@ -232,14 +232,14 @@
 
                 <div>
                     <label class="block text-sm font-medium">Name</label>
-                    <input type="text" name="name" value="{{ $user->profile->name }}"
+                    <input type="text" name="name" value="{{ $user->profile?->name }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2 
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Designation</label>
-                    <input type="text" name="designation" value="{{ $user->profile->designation }}"
+                    <input type="text" name="designation" value="{{ $user->profile?->designation }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2 
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
@@ -253,35 +253,35 @@
 
                 <div>
                     <label class="block text-sm font-medium">Location</label>
-                    <input type="text" name="location" value="{{ $user->profile->location }}"
+                    <input type="text" name="location" value="{{ $user->profile?->location }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Phone</label>
-                    <input type="text" name="phone" value="{{ $user->profile->phone }}"
+                    <input type="text" name="phone" value="{{ $user->profile?->phone }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">Email</label>
-                    <input type="email" name="email" value="{{ $user->profile->email }}"
+                    <input type="email" name="email" value="{{ $user->profile?->email }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">LinkedIn</label>
-                    <input type="url" name="linkedin_link" value="{{ $user->profile->linkedin_link }}"
+                    <input type="url" name="linkedin_link" value="{{ $user->profile?->linkedin_link }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium">GitHub</label>
-                    <input type="url" name="github_link" value="{{ $user->profile->github_link }}"
+                    <input type="url" name="github_link" value="{{ $user->profile?->github_link }}"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
                 </div>
