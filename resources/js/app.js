@@ -263,22 +263,23 @@ document.querySelectorAll('.project-title').forEach(el => {
 });
 
 // service
-document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('click', () => {
-        const form = document.getElementById('update-service-form');
-        const id = card.dataset.id;
+document.querySelectorAll('.update-service-btn').forEach(btn => {
 
-        // Set form action to your route
-        form.action = `/admin/${id}/updateService`;
+    btn.addEventListener('click', () => {
 
-        // Populate modal inputs
-        document.getElementById('update-service-id').value = id;
-        document.getElementById('update-service-title').value = card.dataset.title;
-        document.getElementById('update-service-description').value = card.dataset.description;
+        const id = btn.dataset.id
+        const form = document.getElementById('update-service-form')
 
-        // Show modal
-        document.getElementById('update-service-modal').classList.remove('hidden');
-    });
-});
+        form.action = `/admin/${id}/updateService`
+
+        document.getElementById('update-service-id').value = id
+        document.getElementById('update-service-title').value = btn.dataset.title
+        document.getElementById('update-service-description').value = btn.dataset.description
+
+        document.getElementById('update-service-modal').classList.remove('hidden')
+
+    })
+
+})
 
 

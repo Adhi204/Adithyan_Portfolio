@@ -150,23 +150,29 @@
             </div>
 
             <!-- Services -->
-            <div class="rounded-lg border p-4 flex justify-between items-start">
-
-                <div>
-                    <h3 class="font-semibold mb-1">{{ $service->title }}</h3>
-                    <p class="text-sm text-slate-600">
-                        {{ $service->description }}
-                    </p>
-                </div>
-
-                <!-- Update Button -->
-                <button class="text-indigo-600 hover:text-indigo-800 text-sm update-service-btn"
+            @foreach ($services as $service)
+                <div class="service-card rounded-lg border p-4 hover:bg-slate-50 flex justify-between items-start"
                     data-id="{{ $service->id }}" data-title="{{ $service->title }}"
                     data-description="{{ $service->description }}">
-                    ✎
-                </button>
 
-            </div>
+                    <div>
+                        <h3 class="font-semibold mb-1">{{ $service->title }}</h3>
+
+                        <p class="text-sm text-slate-600">
+                            {{ $service->description }}
+                        </p>
+                    </div>
+
+                    <!-- Update Button -->
+                    <button type="button"
+                        class="update-service-btn text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                        data-id="{{ $service->id }}" data-title="{{ $service->title }}"
+                        data-description="{{ $service->description }}">
+                        Update
+                    </button>
+
+                </div>
+            @endforeach
 
             <!-- Resume -->
             <div class="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
