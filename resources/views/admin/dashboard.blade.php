@@ -248,7 +248,7 @@
                     <label class="block text-sm font-medium">About</label>
                     <textarea name="about" rows="3"
                         class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
-                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">{{ $user->profile->about }}</textarea>
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">{{ $user->profile?->about }}</textarea>
                 </div>
 
                 <div>
