@@ -8,7 +8,7 @@ return [
 
     'user' => [
         'email' => 'adithyanc149@gmail.com',
-        'password' => 'Adya@2002',
+        'password' => '',
         'is_admin' => true,
     ],
 
