@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\UpdateProfileRequest;
 use App\Http\Requests\Admin\UpdateProjectRequest;
 use App\Http\Requests\Admin\UpdateResumeRequest;
 use App\Http\Requests\Admin\UpdateServiceRequest;
+use App\Http\Requests\Admin\CreateServiceRequest;
 use App\Models\Project;
 use App\Models\Resume;
 use App\Models\Service;
@@ -58,6 +59,7 @@ class DashboardController extends Controller
 
                 Route::post('updateResume', 'updateResume')->name('admin.updateResume');
 
+                Route::post('createService', 'createService')->name('admin.createService');
                 Route::post('{service}/updateService', 'updateService')->name('admin.updateService');
             });
     }
@@ -195,9 +197,9 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $resume = Resume::where('user_id', $user->id)->first();
+        $resume = Resume::firstOrNew(['user_id' => $user->id]);
 
-        // Update title (safe validated data)
+        // Update title 
         if ($request->safe()->title) {
             $resume->title = $request->safe()->title;
         }
@@ -206,7 +208,6 @@ class DashboardController extends Controller
         if ($request->hasFile('file')) {
             $resume->saveResume($request->file('file'));
         }
-
 
         $resume->save();
 
@@ -217,20 +218,39 @@ class DashboardController extends Controller
     }
 
     /**
-     * Update the user's service information.
+     * Create a new service for the user.
      */
-    public function updateService(UpdateServiceRequest $request)
+    public function createService(CreateServiceRequest $request)
     {
-        Service::updateOrCreate(
-            ['user_id' => auth()->id()],
-            [
-                'title' => $request->safe()->title,
-                'description' => $request->safe()->description
-            ]
-        );
+        $user = $request->user();
+        Service::create([
+            'user_id' => $user->id,
+            'title' => $request->safe()->title,
+            'description' => $request->safe()->description,
+        ]);
 
         return back()->with([
-            'message' => 'Service saved successfully',
+            'message' => 'Service created successfully',
+            'message_type' => 'success',
+        ]);
+    }
+
+    /**
+     * Update the user's service information.
+     */
+    public function updateService(UpdateServiceRequest $request, Service $service)
+    {
+        if ($service->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $service->update([
+            'title' => $request->safe()->title,
+            'description' => $request->safe()->description
+        ]);
+
+        return back()->with([
+            'message' => 'Service updated successfully',
             'message_type' => 'success',
         ]);
     }

@@ -241,6 +241,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             modal.classList.remove("flex");
         }
     });
+
 });
 
 
@@ -261,25 +262,4 @@ document.querySelectorAll('.project-title').forEach(el => {
         document.getElementById('update-project-modal').classList.remove('hidden');
     });
 });
-
-// service
-document.querySelectorAll('.update-service-btn').forEach(btn => {
-
-    btn.addEventListener('click', () => {
-
-        const id = btn.dataset.id
-        const form = document.getElementById('update-service-form')
-
-        form.action = `/admin/${id}/updateService`
-
-        document.getElementById('update-service-id').value = id
-        document.getElementById('update-service-title').value = btn.dataset.title
-        document.getElementById('update-service-description').value = btn.dataset.description
-
-        document.getElementById('update-service-modal').classList.remove('hidden')
-
-    })
-
-})
-
 

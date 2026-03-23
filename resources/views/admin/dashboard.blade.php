@@ -159,64 +159,79 @@
             </div>
 
             <!-- Services -->
-            <div class="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
-
+            <div class="rounded-xl bg-white p-6 shadow-sm border border-slate-100 md:col-span-2">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="font-semibold text-xl">Services</h2>
-
-                    <!-- Add Service Button -->
-                    <button onclick="document.getElementById('update-service-modal').classList.remove('hidden')"
-                        class="bg-indigo-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-indigo-700 transition">
+                    <button type="button" onclick="document.getElementById('add-service-modal').classList.remove('hidden')"
+                        class="bg-indigo-50 text-indigo-700 border border-indigo-200 font-medium px-3 py-1.5 rounded-md text-sm hover:bg-indigo-100 transition">
                         + Add Service
                     </button>
                 </div>
 
-                <div class="grid gap-4">
-
+                <div class="grid gap-4 md:grid-cols-2">
                     @forelse ($user->services as $service)
-                        <div class="service-card flex justify-between items-start rounded-lg border p-4 hover:shadow-md transition"
-                            data-id="{{ $service->id }}" data-title="{{ $service->title }}"
-                            data-description="{{ $service->description }}">
-
-                            <!-- Service Content -->
-                            <div>
-                                <h3 class="font-semibold mb-1">
-                                    {{ $service->title }}
-                                </h3>
-
-                                <p class="text-sm text-slate-600">
-                                    {{ $service->description }}
-                                </p>
+                        <div
+                            class="flex justify-between items-start rounded-lg border border-slate-200 p-4 hover:shadow-md transition bg-slate-50">
+                            <div class="pr-4">
+                                <h3 class="font-semibold text-slate-800 mb-1">{{ $service->title }}</h3>
+                                <p class="text-sm text-slate-600 line-clamp-2">{{ $service->description }}</p>
                             </div>
 
-                            <!-- Update Button -->
-                            <button type="button" class="update-service-btn text-indigo-600 hover:text-indigo-800 text-sm"
-                                data-id="{{ $service->id }}" data-title="{{ $service->title }}"
-                                data-description="{{ $service->description }}" onclick="openServiceModal(this)">
-                                Update
+                            <button type="button"
+                                onclick="document.getElementById('edit-service-{{ $service->id }}').classList.remove('hidden')"
+                                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium whitespace-nowrap">
+                                Edit
                             </button>
+                        </div>
 
+                        <div id="edit-service-{{ $service->id }}"
+                            class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
+                            <div class="bg-white w-full max-w-sm rounded-xl p-6 shadow-2xl">
+                                <div class="flex justify-between items-center mb-5">
+                                    <h3 class="text-xl font-bold text-slate-800">Edit Service</h3>
+                                    <button type="button"
+                                        onclick="document.getElementById('edit-service-{{ $service->id }}').classList.add('hidden')"
+                                        class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+                                </div>
+
+                                <form method="POST" action="{{ route('admin.updateService', $service->id) }}"
+                                    class="space-y-4">
+                                    @csrf
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 mb-1">Service Title</label>
+                                        <input type="text" name="title" required value="{{ $service->title }}"
+                                            class="w-full rounded-md border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 mb-1">Short
+                                            Description</label>
+                                        <textarea name="description" rows="4" required
+                                            class="w-full rounded-md border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500">{{ $service->description }}</textarea>
+                                    </div>
+                                    <div class="flex justify-end gap-3 pt-4 mt-2 border-t border-slate-100">
+                                        <button type="button"
+                                            onclick="document.getElementById('edit-service-{{ $service->id }}').classList.add('hidden')"
+                                            class="px-4 py-2 rounded-md bg-white border border-slate-300 font-medium text-slate-700 hover:bg-slate-50 transition">Cancel</button>
+                                        <button type="submit"
+                                            class="px-4 py-2 rounded-md bg-indigo-600 font-medium text-white hover:bg-indigo-700 transition shadow-sm">Save
+                                            Changes</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
 
                     @empty
-
-                        <!-- Empty State -->
-                        <div class="flex justify-between items-center border rounded-lg p-4">
-
-                            <p class="text-slate-500 text-sm">
-                                No services added yet.
-                            </p>
-
-                            <button onclick="document.getElementById('update-service-modal').classList.remove('hidden')"
-                                class="text-indigo-600 hover:text-indigo-800 text-sm">
+                        <div
+                            class="col-span-2 flex justify-between items-center border border-slate-200 border-dashed rounded-lg p-6 bg-slate-50">
+                            <p class="text-slate-500 text-sm">No services added yet.</p>
+                            <button type="button"
+                                onclick="document.getElementById('add-service-modal').classList.remove('hidden')"
+                                class="text-indigo-600 font-medium hover:text-indigo-800 text-sm">
                                 Add Service
                             </button>
-
                         </div>
                     @endforelse
-
                 </div>
-
             </div>
 
             <!-- Resume -->
@@ -567,41 +582,68 @@
     </div>
 </div>
 
-<!-- Update Service Modal -->
-<div id="update-service-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">
-    <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg max-h-[80vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">Update Service</h3>
-            <button onclick="document.getElementById('update-service-modal').classList.add('hidden')"
-                class="text-slate-500 hover:text-slate-700 text-xl">&times;</button>
+{{-- add-service-modal --}}
+<div id="add-service-modal"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
+    <div class="bg-white w-full max-w-sm rounded-xl p-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-5">
+            <h3 class="text-xl font-bold text-slate-800">Add New Service</h3>
+            <button type="button" onclick="document.getElementById('add-service-modal').classList.add('hidden')"
+                class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
         </div>
+        <form method="POST" action="{{ route('admin.createService') }}" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Service Title</label>
+                <input type="text" name="title" required
+                    class="w-full rounded-md border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 placeholder-slate-400"
+                    placeholder="e.g. Backend Development">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Short Description</label>
+                <textarea name="description" rows="4" required
+                    class="w-full rounded-md border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 mt-2 border-t border-slate-100">
+                <button type="button" onclick="document.getElementById('add-service-modal').classList.add('hidden')"
+                    class="px-4 py-2 rounded-md bg-white border border-slate-300 font-medium text-slate-700 hover:bg-slate-50 transition">Cancel</button>
+                <button type="submit"
+                    class="px-4 py-2 rounded-md bg-indigo-600 font-medium text-white hover:bg-indigo-700 transition shadow-sm">Add
+                    Service</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-        <form id="update-service-form" method="POST" action="">
+{{-- update-service-modal --}}
+<div id="update-service-modal"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
+    <div class="bg-white w-full max-w-sm rounded-xl p-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-5">
+            <h3 class="text-xl font-bold text-slate-800">Edit Service</h3>
+            <button type="button" onclick="document.getElementById('update-service-modal').classList.add('hidden')"
+                class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+        </div>
+        <form id="update-service-form" method="POST" action="" class="space-y-4">
             @csrf
             <input type="hidden" name="service_id" id="update-service-id">
-
             <div>
-                <label class="block text-sm font-medium">Title</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Service Title</label>
                 <input type="text" id="update-service-title" name="title" required
-                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
-                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                           transition-colors duration-200">
+                    class="w-full rounded-md border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500">
             </div>
-
             <div>
-                <label class="block text-sm font-medium">Description</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Short Description</label>
                 <textarea id="update-service-description" name="description" rows="4" required
-                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
-                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                           transition-colors duration-200"></textarea>
+                    class="w-full rounded-md border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
-
-            <div class="flex justify-end gap-3 pt-4">
+            <div class="flex justify-end gap-3 pt-4 mt-2 border-t border-slate-100">
                 <button type="button"
                     onclick="document.getElementById('update-service-modal').classList.add('hidden')"
-                    class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">Cancel</button>
+                    class="px-4 py-2 rounded-md bg-white border border-slate-300 font-medium text-slate-700 hover:bg-slate-50 transition">Cancel</button>
                 <button type="submit"
-                    class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Update</button>
+                    class="px-4 py-2 rounded-md bg-indigo-600 font-medium text-white hover:bg-indigo-700 transition shadow-sm">Save
+                    Changes</button>
             </div>
         </form>
     </div>
