@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Users\Activities;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,9 +29,7 @@ class AuthController extends Controller
                 Route::get('/login', 'show')->name('admin.show');
                 Route::post('/login', 'login')->name('admin.login');
                 Route::post('/logout', 'logout')->name('admin.logout');
-
-                Route::get('/registerForm', 'registerForm')->name('admin.registerForm');
-                Route::post('/register', 'register')->name('admin.register');
+                Route::post('/updatePassword', 'updatePassword')->name('admin.updatePassword');
             });
     }
 
@@ -73,29 +73,27 @@ class AuthController extends Controller
     }
 
     /**
-     * Show register form
+     * Update the user's password.
      */
-    public function registerForm(Request $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
-        return view('admin.register');
-    }
+        $user = $request->user();
+        $oldPassword = $request->safe()->input('old_password');
 
-    /**
-     * Register a new user
-     */
-    public function register(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
+        if (!Hash::check($oldPassword, $user->password)) {
+            return back()->with([
+                'message' => 'Old password is incorrect',
+                'message_type' => 'error'
+            ]);
+        }
+
+        $user->update(['password' => $request->safe()->password]);
+
+        $user->logActivity(Activities::UserUpdatedPassword, null, $request->ip());
+
+        return back()->with([
+            'message' => 'Password updated successfully',
+            'message_type' => 'success'
         ]);
-
-        User::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_admin' => true,
-        ]);
-
-        return redirect()->route('admin.login');
     }
 }

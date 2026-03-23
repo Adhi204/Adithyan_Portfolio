@@ -29,8 +29,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/login', [AuthController::class, 'show'])->name('admin.show');
     Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
     Route::post('logout', [AuthController::class, 'logout'])->name('admin.logout');
-    Route::get('/registerForm', [AuthController::class, 'registerForm'])->name('admin.registerForm');
-    Route::post('/register', [AuthController::class, 'register'])->name('admin.register');
+    Route::post('updatePassword', [AuthController::class, 'updatePassword'])->name('admin.updatePassword');
 });
 
 DashboardController::routes();

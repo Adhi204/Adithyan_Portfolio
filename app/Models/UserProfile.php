@@ -17,6 +17,12 @@ class UserProfile extends Model
     use HasFactory, Notifiable;
 
     /**
+     * The primary key associated with the table.
+     */
+    protected $primaryKey = 'user_id';
+    public $incrementing = false;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

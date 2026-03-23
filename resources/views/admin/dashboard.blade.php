@@ -24,12 +24,21 @@
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Admin Dashboard</h1>
 
-            <form method="POST" action="{{ route('admin.logout') }}">
-                @csrf
-                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
-                    Logout
+            <div class="flex gap-3">
+                <!-- Logout -->
+                <form method="POST" action="{{ route('admin.logout') }}">
+                    @csrf
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
+                        Logout
+                    </button>
+                </form>
+
+                <!-- Change Password -->
+                <button onclick="document.getElementById('password-modal').classList.remove('hidden')"
+                    class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
+                    Change Password
                 </button>
-            </form>
+            </div>
         </div>
 
         <div class="grid gap-6 md:grid-cols-2">
@@ -593,6 +602,58 @@
                     class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">Cancel</button>
                 <button type="submit"
                     class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="password-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">
+    <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
+
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Change Password</h3>
+
+            <button onclick="document.getElementById('password-modal').classList.add('hidden')"
+                class="text-slate-500 hover:text-slate-700 text-xl">&times;</button>
+        </div>
+
+        <form method="POST" action="{{ route('admin.updatePassword') }}" class="space-y-4">
+            @csrf
+
+            <!-- Current Password -->
+            <div>
+                <label class="block text-sm font-medium">Current Password</label>
+                <input type="password" name="old_password" required
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- New Password -->
+            <div>
+                <label class="block text-sm font-medium">New Password</label>
+                <input type="password" name="password" required
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+                <label class="block text-sm font-medium">Confirm Password</label>
+                <input type="password" name="password_confirmation" required
+                    class="mt-1 w-full rounded-md border-2 border-gray-400 px-3 py-2
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="document.getElementById('password-modal').classList.add('hidden')"
+                    class="px-4 py-2 rounded-md border text-slate-600 hover:bg-slate-50">
+                    Cancel
+                </button>
+
+                <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
+                    Update Password
+                </button>
             </div>
         </form>
     </div>

@@ -34,14 +34,6 @@
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">
                 Login
             </button>
-
-            <p class="text-center text-sm text-gray-600 mt-4">
-                Don't have an account?
-                <a href="{{ route('admin.registerForm') }}" class="text-indigo-600 hover:underline font-medium">
-                    Register
-                </a>
-            </p>
-
         </form>
     </div>
 @endsection
