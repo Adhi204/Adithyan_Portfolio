@@ -1,27 +1,30 @@
 import "./bootstrap";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    let modal = null;
+
     try {
         const res = await fetch("/api/portfolio");
         const data = await res.json();
 
-        //PROFILE
+        // PROFILE
         if (data.profile) {
-            document.getElementById("name").textContent =
-                data.profile.name ?? "";
+            const nameEl = document.getElementById("name");
+            const designationEl = document.getElementById("designation");
+            const aboutEl = document.getElementById("about");
+            const avatarEl = document.getElementById("avatar");
 
-            document.getElementById("designation").textContent =
-                data.profile.designation ?? "";
+            if (nameEl) nameEl.textContent = data.profile.name ?? "";
+            if (designationEl)
+                designationEl.textContent = data.profile.designation ?? "";
+            if (aboutEl) aboutEl.textContent = data.profile.about ?? "";
 
-            document.getElementById("about").textContent =
-                data.profile.about ?? "";
-
-            if (data.profile.avatar) {
-                document.getElementById("avatar").src = data.profile.avatar;
+            if (avatarEl && data.profile.avatar) {
+                avatarEl.src = data.profile.avatar;
             }
         }
 
-        // PROJECTS
+        //  PROJECTS
         const projectsEl = document.getElementById("projects-list");
 
         if (projectsEl && Array.isArray(data.projects)) {
@@ -33,76 +36,81 @@ document.addEventListener("DOMContentLoaded", async () => {
                     "rounded-xl border bg-white p-6 shadow-sm hover:shadow transition";
 
                 card.innerHTML = `
-            <h3
-                class="cursor-pointer text-xl font-semibold text-slate-900 hover:text-indigo-600 transition"
-                data-project-index="${index}"
-            >
-                ${project.title}
-            </h3>
+                    <h3
+                        class="cursor-pointer text-xl font-semibold text-slate-900 hover:text-indigo-600 transition"
+                        data-project-index="${index}"
+                    >
+                        ${project.title}
+                    </h3>
 
-            ${
-                project.github_url
-                    ? `<a href="${project.github_url}" target="_blank"
-                          class="mt-3 inline-block text-sm font-medium text-slate-600 hover:text-indigo-600">
-                          View on GitHub →
-                       </a>`
-                    : ""
-            }
-        `;
+                    ${
+                        project.github_url
+                            ? `<a href="${project.github_url}" target="_blank"
+                                class="mt-3 inline-block text-sm font-medium text-slate-600 hover:text-indigo-600">
+                                View on GitHub →
+                               </a>`
+                            : ""
+                    }
+                `;
 
                 projectsEl.appendChild(card);
             });
         }
 
-        //project model
-        const modal = document.getElementById("project-modal");
+        // PROJECT MODAL
+        modal = document.getElementById("project-modal");
         const modalTitle = document.getElementById("modal-title");
         const modalDescription = document.getElementById("modal-description");
         const modalClose = document.getElementById("modal-close");
 
-        document.addEventListener("click", (e) => {
-            const target = e.target;
+        if (modal && modalTitle && modalDescription) {
+            document.addEventListener("click", (e) => {
+                const target = e.target;
 
-            if (target.matches("[data-project-index]")) {
-                const project = data.projects[target.dataset.projectIndex];
+                if (target.matches("[data-project-index]")) {
+                    const project = data.projects[target.dataset.projectIndex];
 
-                modalTitle.textContent = project.title;
+                    if (modalTitle) modalTitle.textContent = project.title;
 
-                if (Array.isArray(project.description)) {
-                    modalDescription.innerHTML = `
-                <ul class="list-disc list-inside space-y-2">
-                    ${project.description
-                        .map((point) => `<li>${point}</li>`)
-                        .join("")}
-                </ul>
-            `;
-                } else {
-                    modalDescription.textContent = project.description ?? "";
+                    if (Array.isArray(project.description)) {
+                        modalDescription.innerHTML = `
+                            <ul class="list-disc list-inside space-y-2">
+                                ${project.description
+                                    .map((point) => `<li>${point}</li>`)
+                                    .join("")}
+                            </ul>
+                        `;
+                    } else {
+                        modalDescription.textContent =
+                            project.description ?? "";
+                    }
+
+                    modal.classList.remove("hidden");
+                    modal.classList.add("flex");
                 }
+            });
 
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
+            if (modalClose) {
+                modalClose.addEventListener("click", () => {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                });
             }
-        });
 
-        // Close modal
-        modalClose.addEventListener("click", () => {
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-        });
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                }
+            });
+        }
 
-        // Close on backdrop click
-        modal.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.classList.add("hidden");
-                modal.classList.remove("flex");
-            }
-        });
-
-        //SKILLS
+        // SKILLS
         const skillsEl = document.getElementById("skills-list");
+
         if (skillsEl && Array.isArray(data.skills)) {
             skillsEl.innerHTML = "";
+
             data.skills.forEach((skill) => {
                 skillsEl.innerHTML += `
                     <span class="rounded-lg bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700">
@@ -115,44 +123,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         // RESUME
         const resumeBox = document.getElementById("resume-box");
 
-        if (resumeBox && data.resume) {
-            const resumeUrl = data.resume.file_name
-                ? `/storage/documents/documents/${data.resume.file_name}`
-                : null;
+        if (resumeBox) {
+            if (data.resume) {
+                const resumeUrl = data.resume.file_name
+                    ? `/storage/documents/documents/${data.resume.file_name}`
+                    : null;
 
-            const updatedDate = new Date(
-                data.resume.updated_at,
-            ).toLocaleDateString();
+                const updatedDate = new Date(
+                    data.resume.updated_at,
+                ).toLocaleDateString();
 
-            resumeBox.innerHTML = `
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                resumeBox.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <p class="text-lg font-semibold text-slate-900">
+                                ${data.resume.title ?? "Resume"}
+                            </p>
+                            <p class="mt-1 text-sm text-slate-500">
+                                Last updated: ${updatedDate}
+                            </p>
+                        </div>
 
-        <div>
-            <p class="text-lg font-semibold text-slate-900">
-                ${data.resume.title ?? "Resume"}
-            </p>
-
-            <p class="mt-1 text-sm text-slate-500">
-                Last updated: ${updatedDate}
-            </p>
-        </div>
-
-        ${
-            resumeUrl
-                ? `<a href="${resumeUrl}" target="_blank"
-                     class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition">
-                     View PDF
-                   </a>`
-                : `<span class="text-sm text-slate-500">No resume available</span>`
+                        ${
+                            resumeUrl
+                                ? `<a href="${resumeUrl}" target="_blank"
+                                     class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition">
+                                     View PDF
+                                   </a>`
+                                : `<span class="text-sm text-slate-500">No resume available</span>`
+                        }
+                    </div>
+                `;
+            } else {
+                resumeBox.innerHTML = `<p class="text-sm text-slate-500">No resume uploaded.</p>`;
+            }
         }
 
-    </div>
-    `;
-        } else {
-            resumeBox.innerHTML = `<p class="text-sm text-slate-500">No resume uploaded.</p>`;
-        }
-
-        // WHAT I DO / SERVICES
+        // SERVICES
         const servicesEl = document.getElementById("services-list");
 
         if (servicesEl && Array.isArray(data.services)) {
@@ -160,17 +167,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             data.services.forEach((service) => {
                 servicesEl.innerHTML += `
-            <div class="rounded-2xl border border-slate-200 p-6
-                        transition hover:shadow-md hover:-translate-y-1">
-                <h3 class="text-lg font-semibold mb-2">
-                    ${service.title}
-                </h3>
+                    <div class="rounded-2xl border border-slate-200 p-6
+                                transition hover:shadow-md hover:-translate-y-1">
+                        <h3 class="text-lg font-semibold mb-2">
+                            ${service.title}
+                        </h3>
 
-                <p class="text-slate-600 text-sm leading-relaxed">
-                    ${service.description}
-                </p>
-            </div>
-        `;
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            ${service.description}
+                        </p>
+                    </div>
+                `;
             });
         }
 
@@ -178,42 +185,55 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (data.profile) {
             const { email, phone, github_link, linkedin_link } = data.profile;
 
-            // Email
             if (email) {
                 const el = document.getElementById("contact-email");
-                el.href = `mailto:${email}`;
-                document.getElementById("email-text").textContent = email;
-                el.classList.remove("hidden");
+                const text = document.getElementById("email-text");
+
+                if (el && text) {
+                    el.href = `mailto:${email}`;
+                    text.textContent = email;
+                    el.classList.remove("hidden");
+                }
             }
 
-            // Phone
             if (phone) {
                 const el = document.getElementById("contact-phone");
-                el.href = `tel:${phone}`;
-                document.getElementById("phone-text").textContent = phone;
-                el.classList.remove("hidden");
+                const text = document.getElementById("phone-text");
+
+                if (el && text) {
+                    el.href = `tel:${phone}`;
+                    text.textContent = phone;
+                    el.classList.remove("hidden");
+                }
             }
 
-            // GitHub
             if (github_link) {
                 const el = document.getElementById("contact-github");
-                el.href = github_link;
-                document.getElementById("github-text").textContent =
-                    github_link.replace(/^https?:\/\//, "");
-                el.classList.remove("hidden");
+                const text = document.getElementById("github-text");
+
+                if (el && text) {
+                    el.href = github_link;
+                    text.textContent = github_link.replace(/^https?:\/\//, "");
+                    el.classList.remove("hidden");
+                }
             }
 
-            // LinkedIn
             if (linkedin_link) {
                 const el = document.getElementById("contact-linkedin");
-                el.href = linkedin_link;
-                document.getElementById("linkedin-text").textContent =
-                    linkedin_link.replace(/^https?:\/\//, "");
-                el.classList.remove("hidden");
+                const text = document.getElementById("linkedin-text");
+
+                if (el && text) {
+                    el.href = linkedin_link;
+                    text.textContent = linkedin_link.replace(
+                        /^https?:\/\//,
+                        "",
+                    );
+                    el.classList.remove("hidden");
+                }
             }
         }
 
-        //SCROLL ANIMATION
+        // SCROLL ANIMATION
         document.querySelectorAll("section").forEach((section) => {
             section.classList.add("opacity-0", "translate-y-6");
 
@@ -224,9 +244,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         section.classList.add("transition-all", "duration-700");
                     }
                 },
-                {
-                    threshold: 0.15,
-                },
+                { threshold: 0.15 },
             );
 
             observer.observe(section);
@@ -235,31 +253,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("❌ Portfolio load failed", err);
     }
 
+    // ESC KEY
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
+        if (e.key === "Escape" && modal) {
             modal.classList.add("hidden");
             modal.classList.remove("flex");
         }
     });
-
 });
 
+//  ADMIN PROJECT
+const projectTitles = document.querySelectorAll(".project-title");
 
-//admin dashboard 
+if (projectTitles.length > 0) {
+    projectTitles.forEach((el) => {
+        el.addEventListener("click", () => {
+            const form = document.getElementById("update-project-form");
 
-//project
-document.querySelectorAll('.project-title').forEach(el => {
-    el.addEventListener('click', () => {
-        const form = document.getElementById('update-project-form');
-        form.action = `/admin/${el.dataset.id}/updateProject`;
+            if (!form) return;
 
-        document.getElementById('update-project-id').value = el.dataset.id;
-        document.getElementById('update-title').value = el.dataset.title;
-        document.getElementById('update-description').value = el.dataset.description;
-        document.getElementById('update-github').value = el.dataset.github;
-        document.getElementById('update-live').value = el.dataset.live;
+            form.action = `/admin/${el.dataset.id}/updateProject`;
 
-        document.getElementById('update-project-modal').classList.remove('hidden');
+            const idEl = document.getElementById("update-project-id");
+            const titleEl = document.getElementById("update-title");
+            const descEl = document.getElementById("update-description");
+            const githubEl = document.getElementById("update-github");
+            const liveEl = document.getElementById("update-live");
+            const modalEl = document.getElementById("update-project-modal");
+
+            if (idEl) idEl.value = el.dataset.id;
+            if (titleEl) titleEl.value = el.dataset.title;
+            if (descEl) descEl.value = el.dataset.description;
+            if (githubEl) githubEl.value = el.dataset.github;
+            if (liveEl) liveEl.value = el.dataset.live;
+
+            if (modalEl) modalEl.classList.remove("hidden");
+        });
     });
-});
-
+}
